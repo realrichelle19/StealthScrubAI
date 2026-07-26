@@ -1,4 +1,27 @@
+# Dependency directories
 node_modules/
+
+# Environment configuration files
 .env
-.DS_Store
+.env.*
+!.env.example
+
+# Credentials & Key Certificates
+*.pem
+*.key
+*.cert
+credentials.json
+secrets.*
+
+# Logs & Operating System Files
 *.log
+.DS_Store
+.DS_Store?
+._*
+.idea/
+.vscode/
+
+# Build & Test outputs
+coverage/
+dist/
+tmp/

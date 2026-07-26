@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StealthScrub AI - Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-[#f8fafc] text-slate-800 min-h-screen font-sans flex antialiased">
+  <div class="flex w-full min-h-screen">
+    <aside class="w-64 bg-white border-r border-slate-200/80 p-6 flex flex-col justify-between shrink-0 shadow-sm z-20">
+      <div>
+        <a href="/" class="flex items-center gap-3 mb-8 cursor-pointer">
+          <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shadow-md">
+            <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+          </div>
+          <h1 class="text-xl font-extrabold tracking-tight text-slate-900">StealthScrub</h1>
+        </a>
+
+        <nav class="space-y-1.5">
+          <a href="/" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"><i data-lucide="home" class="w-5 h-5"></i><span>Home</span></a>
+          <a href="/dashboard" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i><span>Dashboard</span></a>
+          <a href="/history" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"><i data-lucide="history" class="w-5 h-5"></i><span>Scrub History</span></a>
+          <a href="/security-logs" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"><i data-lucide="shield" class="w-5 h-5"></i><span>Security Logs</span></a>
+          <a href="/settings" class="sidebar-nav-btn active w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-bold transition-all"><i data-lucide="settings" class="w-5 h-5"></i><span>Settings</span></a>
+          <a href="/docs" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i><span>Documentation</span></a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 p-8 space-y-6 overflow-y-auto">
+      <div>
+        <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase mb-1">
+          <i data-lucide="settings" class="w-4 h-4"></i> NODE CONFIGURATION
+        </div>
+        <h2 class="text-3xl font-extrabold text-slate-900">Settings</h2>
+      </div>
+
+      <div class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-6 max-w-3xl">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 mb-1">Local Engine Endpoint</h3>
+          <input type="text" value="http://localhost:11434" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-mono">
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 mb-1">Target AI Model</h3>
+          <input type="text" value="gemma2:2b" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-mono">
+        </div>
+        <button class="bg-[#064e3b] text-white px-6 py-2.5 rounded-full text-xs font-bold shadow-md">Save Settings</button>
+      </div>
+    </main>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+
+</html>

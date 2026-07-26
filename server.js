@@ -234,10 +234,38 @@ ${text}`;
   return data.response ? data.response.trim() : text;
 }
 
-/**
- * POST /api/scrub
- * Accepts raw text or uploaded file
- */
+// ═══════════════════════════════════════════════════════════════════════════
+//  NAVIGATION PAGE ROUTES
+// ═══════════════════════════════════════════════════════════════════════════
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
+app.get('/history', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'history.html'));
+});
+
+app.get('/security-logs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'logs.html'));
+});
+
+app.get('/settings', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'settings.html'));
+});
+
+app.get('/docs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'docs.html'));
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  API ENDPOINTS
+// ═══════════════════════════════════════════════════════════════════════════
+
 app.post('/api/scrub', upload.single('image'), async (req, res) => {
   const startTime = Date.now();
   let inputText = '';
@@ -249,11 +277,9 @@ app.post('/api/scrub', upload.single('image'), async (req, res) => {
       source = 'file';
       const fileMime = req.file.mimetype || '';
       
-      // Text / Log / Code file buffer
       if (fileMime.includes('text') || fileMime.includes('json') || fileMime.includes('log') || req.file.originalname.endsWith('.txt') || req.file.originalname.endsWith('.log')) {
         inputText = req.file.buffer.toString('utf-8');
       } else {
-        // Image OCR buffer
         const ocrResult = await extractTextFromImageBuffer(req.file.buffer);
         inputText = ocrResult.text;
         ocrWords = ocrResult.ocrWords;
@@ -275,12 +301,10 @@ app.post('/api/scrub', upload.single('image'), async (req, res) => {
       });
     }
 
-    // 1. Pass 1: High-Speed Regex Redaction Layer
     const { redactedText: regexRedacted, counts: regexCounts } = applyRegexRedactions(inputText);
 
     const mode = req.body.mode || req.query.mode || 'standard';
 
-    // 2. Pass 2: Contextual LLM Redaction via Local Gemma (Graceful Fallback if unavailable)
     let finalScrubbedText = regexRedacted;
     let ollamaStatus = 'success';
     let ollamaNotice = null;

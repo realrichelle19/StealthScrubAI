@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StealthScrub AI — Zero-Cloud PII & Credential Redactor</title>
+  <title>StealthScrub AI — Flagship Zero-Cloud Privacy Platform</title>
 
   <!-- Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,12 +22,11 @@
         extend: {
           colors: {
             brand: {
-              black: '#030712',
-              card: '#0d1117',
-              border: '#1f293d',
-              cyan: '#06b6d4',
               emerald: '#10b981',
-              neonRed: '#ef4444',
+              darkEmerald: '#064e3b',
+              lightMint: '#d1fae5',
+              border: '#e2e8f0',
+              bgLight: '#f8fafc',
             }
           },
           fontFamily: {
@@ -48,441 +47,587 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="bg-[#030712] text-slate-100 min-h-screen font-sans flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+<body
+  class="bg-[#f8fafc] text-slate-900 min-h-screen font-sans flex flex-col antialiased selection:bg-emerald-500/20 selection:text-emerald-900">
 
-  <!-- Background Decorative Cyber Grids & Ambient Hero Lighting -->
-  <div class="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(255,255,255,0))] -z-10"></div>
-  <div class="fixed inset-0 pointer-events-none cyber-grid-bg -z-10"></div>
+  <!-- Background Decorative Light Dot Grid Pattern -->
+  <div
+    class="fixed inset-0 pointer-events-none bg-[radial-gradient(#cbd5e1_1.2px,transparent_1.2px)] [background-size:20px_20px] opacity-70 -z-10">
+  </div>
 
-  <!-- 1. NAVIGATION BAR -->
-  <header class="sticky top-0 z-50 bg-[#030712]/80 backdrop-blur-xl border-b border-slate-800/80 px-6 py-4">
+  <!-- 1. PREMIUM NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-8 py-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-      
+
       <!-- Brand Logo -->
-      <div class="flex items-center gap-3.5 cursor-pointer" id="navBrandLogo">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-500 flex items-center justify-center text-black font-black shadow-lg shadow-emerald-500/20">
-          <i data-lucide="shield-check" class="w-6 h-6"></i>
+      <a href="/" class="flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-black shadow-md">
+          <i data-lucide="shield-check" class="w-6 h-6 text-emerald-400"></i>
         </div>
         <div>
-          <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
-            StealthScrub <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">AI</span>
+          <h1 class="text-xl font-black tracking-tight text-slate-900 flex items-center gap-2">
+            StealthScrub <span class="text-[#10b981]">AI</span>
           </h1>
-          <p class="text-[10px] font-mono text-slate-400 tracking-wider">ZERO-CLOUD PRIVACY VAULT</p>
+          <p class="text-[10px] font-mono text-slate-400 font-bold tracking-wider uppercase">Zero-Cloud Privacy Vault
+          </p>
         </div>
-      </div>
+      </a>
 
       <!-- Navigation Links -->
-      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-400 font-mono tracking-wide">
-        <a href="#heroSection" class="hover:text-emerald-400 transition-colors">OVERVIEW</a>
-        <a href="#vault3dSection" class="hover:text-emerald-400 transition-colors">3D VAULT</a>
-        <a href="#liveDemoSection" class="hover:text-emerald-400 transition-colors">LIVE DEMO</a>
-        <a href="#architectureSection" class="hover:text-emerald-400 transition-colors">ARCHITECTURE</a>
-        <a href="#benchmarkSection" class="hover:text-emerald-400 transition-colors">BENCHMARKS</a>
-        <a href="#logsSection" class="hover:text-emerald-400 transition-colors">SECURITY LOGS</a>
+      <nav class="hidden md:flex items-center gap-8 text-xs font-bold text-slate-600 font-mono tracking-wide">
+        <a href="/" class="text-emerald-600 font-extrabold">HOME</a>
+        <a href="/docs" class="hover:text-slate-900 transition-colors">DOCUMENTATION</a>
+        <a href="/dashboard" class="hover:text-slate-900 transition-colors">DASHBOARD</a>
+        <a href="/history" class="hover:text-slate-900 transition-colors">SCRUB HISTORY</a>
+        <a href="/security-logs" class="hover:text-slate-900 transition-colors">SECURITY LOGS</a>
+        <a href="/settings" class="hover:text-slate-900 transition-colors">SETTINGS</a>
       </nav>
 
-      <!-- Nav Action CTAs -->
+      <!-- Nav Action CTA -->
       <div class="flex items-center gap-3">
-        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-inner">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>WEBGPU ACTIVE</span>
-        </div>
-
-        <button id="openAppBtn" class="btn-emerald-glow px-5 py-2.5 rounded-full text-xs font-black tracking-wide uppercase flex items-center gap-2 shadow-lg cursor-pointer">
-          <i data-lucide="cpu" class="w-4 h-4"></i> LAUNCH ENGINE
-        </button>
+        <a href="/dashboard"
+          class="bg-[#064e3b] hover:bg-[#047857] text-white px-6 py-2.5 rounded-full text-xs font-extrabold tracking-wide uppercase flex items-center gap-2 shadow-md transition-all active:scale-95">
+          <i data-lucide="layout-grid" class="w-4 h-4"></i> LAUNCH DASHBOARD
+        </a>
       </div>
 
     </div>
   </header>
 
-  <!-- 2. HERO SECTION WITH INTERACTIVE 3D VAULT CANVAS -->
-  <section id="heroSection" class="relative pt-12 pb-20 px-6 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-    
+  <!-- 2. HERO SECTION WITH 3D SECURE PROCESSING VAULT ANIMATION -->
+  <section
+    class="relative pt-12 pb-20 px-8 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
     <!-- Hero Text Content -->
     <div class="lg:col-span-7 space-y-6">
-      
+
       <!-- Status Badge -->
-      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold shadow-lg">
-        <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-400"></i>
-        <span>POWERED BY LOCAL GEMMA 2B & WEBGPU</span>
+      <div
+        class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-[#047857] text-xs font-mono font-bold shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>ON-DEVICE AI PRIVACY • WEBGPU ACCELERATED</span>
       </div>
 
       <!-- Main Headline -->
-      <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white leading-[1.1]">
+      <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 leading-[1.15]">
         Privacy Powered by AI.<br>
-        <span class="gradient-text-emerald">Protected Before It Leaves Your Device.</span>
+        <span class="text-[#10b981]">Protected Before It Leaves Your Device.</span>
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl">
-        StealthScrub AI detects and redacts passwords, API keys, personal records, credentials, and financial data entirely inside your browser RAM using Gemma 2B and WebGPU—zero cloud egress.
+      <p class="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl">
+        StealthScrub AI automatically detects and redacts passwords, API keys, financial information, credentials,
+        personal data, and confidential content entirely inside your browser using Gemma 2B and WebGPU.
       </p>
 
       <!-- Hero Buttons -->
       <div class="flex flex-wrap items-center gap-4 pt-2">
-        <a href="#liveDemoSection" class="btn-emerald-glow px-7 py-3.5 rounded-full text-xs font-black tracking-wider uppercase flex items-center gap-2.5 shadow-xl">
-          <i data-lucide="zap" class="w-4.5 h-4.5"></i> TRY OFFLINE DEMO
+        <a href="/dashboard"
+          class="bg-[#064e3b] hover:bg-[#047857] text-white px-8 py-4 rounded-full text-xs font-black tracking-wider uppercase flex items-center gap-2.5 shadow-lg transition-all active:scale-95">
+          <i data-lucide="play" class="w-4.5 h-4.5"></i> TRY OFFLINE DEMO
         </a>
 
-        <a href="#vault3dSection" class="btn-cyan-outline px-6 py-3.5 rounded-full text-xs font-bold tracking-wider uppercase flex items-center gap-2 shadow-md">
-          <i data-lucide="box" class="w-4 h-4"></i> EXPLORE 3D VAULT
+        <a href="/dashboard"
+          class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-7 py-4 rounded-full text-xs font-bold tracking-wider uppercase flex items-center gap-2 transition-all">
+          <i data-lucide="eye" class="w-4 h-4 text-slate-500"></i> WATCH LIVE SCAN
         </a>
 
-        <button id="heroLaunchBtn" class="px-6 py-3.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold tracking-wider uppercase flex items-center gap-2 transition-all">
-          <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i> LAUNCH DASHBOARD
-        </button>
-      </div>
-
-      <!-- Quick Metrics Ribbon -->
-      <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800/80 font-mono">
-        <div>
-          <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">LATENCY</p>
-          <p class="text-xl font-bold text-emerald-400">&lt; 85ms</p>
-        </div>
-        <div>
-          <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">CLOUD EGRESS</p>
-          <p class="text-xl font-bold text-cyan-400">0 KB AIR-GAPPED</p>
-        </div>
-        <div>
-          <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">REDACTION ACCURACY</p>
-          <p class="text-xl font-bold text-white">99.8%</p>
-        </div>
+        <a href="#technology"
+          class="text-slate-600 hover:text-slate-900 text-xs font-bold font-mono px-4 py-4 flex items-center gap-1">
+          Learn How It Works &darr;
+        </a>
       </div>
 
     </div>
 
-    <!-- 3D Interactive WebGL Shield Vault Container -->
-    <div id="vault3dSection" class="lg:col-span-5 relative flex items-center justify-center min-h-[420px] glass-card-cyber rounded-3xl p-4 overflow-hidden border border-slate-800 shadow-2xl">
-      <!-- Ambient Backlight Glow -->
-      <div class="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-cyan-500/10 to-transparent pointer-events-none"></div>
+    <!-- 3D Secure Processing Vault Centerpiece Canvas -->
+    <div
+      class="lg:col-span-5 relative flex items-center justify-center min-h-[440px] bg-slate-950 border border-slate-900 rounded-3xl p-6 shadow-2xl overflow-hidden group">
 
-      <!-- Canvas for Three.js 3D WebGL Vault Model -->
-      <canvas id="canvas3dVault" class="w-full h-full min-h-[380px] rounded-2xl cursor-grab active:cursor-grabbing"></canvas>
+      <!-- Canvas for Three.js 3D Sphere & Orbital Rings -->
+      <canvas id="canvas3dVault"
+        class="w-full h-full min-h-[400px] rounded-2xl cursor-grab active:cursor-grabbing"></canvas>
 
-      <!-- 3D HUD Overlay Badge -->
-      <div class="absolute bottom-4 left-4 right-4 bg-slate-950/80 backdrop-blur-md p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs font-mono">
-        <span class="flex items-center gap-2 text-emerald-400 font-bold">
-          <i data-lucide="rotate-3d" class="w-4 h-4 text-cyan-400"></i> Interactive 3D Redaction Vault
-        </span>
-        <span class="text-[10px] text-slate-400">Drag to rotate 3D Core</span>
+      <!-- 3D Vault Stage Status HUD Overlay -->
+      <div
+        class="absolute bottom-4 left-4 right-4 bg-slate-900/90 text-white backdrop-blur-md p-3.5 rounded-xl border border-slate-800 flex items-center justify-between text-xs font-mono">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          <span id="vaultStageText" class="font-bold text-emerald-400">Gemma 2B Vault: Scanning Document...</span>
+        </div>
+        <span class="text-[10px] text-slate-400 font-bold uppercase">3D REAL-TIME STORY</span>
       </div>
+
     </div>
 
   </section>
 
-  <!-- 3. INTERACTIVE LIVE DEMO PLAYGROUND SECTION ("Try Offline Demo") -->
-  <section id="liveDemoSection" class="py-16 px-6 bg-slate-950/60 border-y border-slate-900 relative">
-    <div class="max-w-7xl mx-auto space-y-8">
-      
-      <!-- Section Header -->
-      <div class="text-center max-w-3xl mx-auto space-y-3">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/50 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
-          <i data-lucide="play-circle" class="w-4 h-4 text-cyan-400"></i>
-          <span>INTERACTIVE SANDBOX PLAYGROUND</span>
-        </div>
-        <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
-          Watch Sensitive Data Get Neutralized in Real-Time
-        </h2>
-        <p class="text-slate-400 text-sm">
-          Select a sample leak below or paste your own raw content to test dual-pass local sanitization.
-        </p>
-      </div>
-
-      <!-- Judge Presets Bar -->
-      <div class="flex flex-wrap items-center justify-center gap-3">
-        <button id="sampleApiBtn" class="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/50 text-cyan-300 text-xs font-bold flex items-center gap-2 transition-all shadow-md active:scale-95">
-          <i data-lucide="key" class="w-3.5 h-3.5 text-red-400"></i> AWS & API Leak
-        </button>
-        <button id="sampleCustomerBtn" class="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-emerald-300 text-xs font-bold flex items-center gap-2 transition-all shadow-md active:scale-95">
-          <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-400"></i> Customer Aadhaar & PAN
-        </button>
-        <button id="sampleMedicalBtn" class="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-purple-500/50 text-purple-300 text-xs font-bold flex items-center gap-2 transition-all shadow-md active:scale-95">
-          <i data-lucide="file-heart" class="w-3.5 h-3.5 text-purple-400"></i> Clinical Patient Note
-        </button>
-      </div>
-
-      <!-- Interactive Sandbox Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
-        <!-- Left: Input Console -->
-        <div class="lg:col-span-5 flex flex-col glass-card-cyber rounded-2xl p-6 relative">
-          <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
-            <div class="flex items-center gap-2">
-              <i data-lucide="file-input" class="w-4 h-4 text-cyan-400"></i>
-              <h3 class="text-xs font-bold text-white tracking-wide uppercase font-mono">1. Raw Confidential Input</h3>
-            </div>
-            <span id="charCounter" class="text-[11px] text-slate-500 font-mono">0 chars</span>
-          </div>
-
-          <textarea id="rawTextInput" class="w-full flex-1 bg-black/60 border border-slate-800 rounded-xl p-4 text-slate-200 font-mono text-xs leading-relaxed focus:outline-none focus:border-cyan-500 transition-all resize-none min-h-[260px]" placeholder="Paste credentials, code, logs, Aadhaar, PAN, or health records here..." spellcheck="false"></textarea>
-        </div>
-
-        <!-- Middle: Dual-Pass Processing Pipeline Beam -->
-        <div class="lg:col-span-2 flex flex-col items-center justify-center gap-3 py-4 my-auto">
-          <div id="pipelineStep1" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-800 text-center text-xs font-mono font-bold text-red-400 shadow-lg">
-            PASS 1: Fast Regex
-          </div>
-          
-          <div class="w-1 h-8 bg-gradient-to-b from-red-500 to-emerald-500 rounded-full animate-pulse"></div>
-
-          <button id="scrubBtn" class="btn-emerald-glow w-full py-4 px-3 rounded-2xl text-xs font-black tracking-wider uppercase shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
-            <i data-lucide="cpu" class="w-4 h-4"></i> SANITIZE VIA LOCAL GEMMA
-          </button>
-
-          <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-cyan-500 rounded-full animate-pulse"></div>
-
-          <div id="pipelineStep2" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-800 text-center text-xs font-mono font-bold text-cyan-400 shadow-lg">
-            PASS 2: Gemma 2B Scan
-          </div>
-        </div>
-
-        <!-- Right: Sanitized Output Console -->
-        <div class="lg:col-span-5 flex flex-col glass-card-cyber rounded-2xl p-6 relative">
-          <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
-            <div class="flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-              <h3 class="text-xs font-bold text-white tracking-wide uppercase font-mono">2. Clean Redacted Output</h3>
-            </div>
-
-            <div class="flex bg-slate-900 p-0.5 rounded-lg border border-slate-800 text-[11px] font-mono">
-              <button class="toggle-btn active px-3 py-1 rounded-md text-cyan-300 font-bold bg-slate-800" data-view="final">AI Cleaned</button>
-              <button class="toggle-btn px-3 py-1 rounded-md text-slate-400 hover:text-slate-200" data-view="regex">Regex Only</button>
-            </div>
-          </div>
-
-          <div class="flex-1 flex flex-col min-h-[260px] relative">
-            <div id="loader" class="hidden absolute inset-0 bg-[#030712]/95 backdrop-blur-md rounded-xl z-20 flex flex-col items-center justify-center gap-3">
-              <div class="w-10 h-10 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
-              <p id="loaderText" class="text-xs font-mono text-cyan-300 animate-pulse">Running Gemma 2B Local Scan...</p>
-            </div>
-
-            <div id="emptyOutputState" class="flex-1 flex flex-col items-center justify-center text-center p-6 text-slate-500">
-              <i data-lucide="lock" class="w-12 h-12 mb-3 text-slate-700"></i>
-              <p class="text-xs font-semibold text-slate-400">Sanitized output will appear here with color-coded redaction badges</p>
-            </div>
-
-            <div id="outputTextContainer" class="hidden flex-1 bg-black/70 border border-slate-800 rounded-xl p-4 overflow-y-auto max-h-[280px]">
-              <pre id="outputPre" class="text-xs font-mono leading-relaxed text-slate-200 whitespace-pre-wrap break-words"><code></code></pre>
-            </div>
-          </div>
-
-          <!-- Actions Bar -->
-          <div id="auditCounterBar" class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
-            <span id="auditCounterBadge" class="text-cyan-300 font-bold">
-              <span id="auditCounterText">0 Secrets Redacted</span>
-            </span>
-            <div class="flex items-center gap-2">
-              <button id="copyBtn" disabled class="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-semibold disabled:opacity-40">
-                <i data-lucide="copy" class="w-3.5 h-3.5 inline mr-1"></i> Copy
-              </button>
-              <button id="downloadCleanBtn" disabled class="px-3.5 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-semibold disabled:opacity-40">
-                <i data-lucide="download" class="w-3.5 h-3.5 inline mr-1"></i> Download Clean
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- 4. 3D ARCHITECTURE VAULT SECTION ("How Zero-Cloud Works") -->
-  <section id="architectureSection" class="py-20 px-6 max-w-7xl mx-auto w-full space-y-12">
+  <!-- 3. SECTION: WHY STEALTHSCRUB? (Interactive 3D Tilt Cards) -->
+  <section class="py-20 px-8 max-w-7xl mx-auto w-full space-y-12">
     <div class="text-center max-w-3xl mx-auto space-y-3">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/50 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold">
-        <i data-lucide="cpu" class="w-4 h-4 text-emerald-400"></i>
-        <span>ZERO-TRUST BROWSER ARCHITECTURE</span>
+      <div
+        class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#047857] text-xs font-mono font-bold">
+        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+        <span>THE STEALTHSCRUB ADVANTAGE</span>
       </div>
-      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
-        Three Layers of Hardware-Accelerated Defense
+      <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Why Security Teams Trust StealthScrub
       </h2>
-      <p class="text-slate-400 text-sm">
-        Every byte stays inside volatile RAM. No server calls, no telemetry, no disk persistence.
+      <p class="text-slate-600 text-sm max-w-xl mx-auto">
+        Built from the ground up for strict data governance, local processing, and zero cloud data egress.
       </p>
     </div>
 
-    <!-- 3D Layer Stack Cards -->
+    <!-- 6 Interactive 3D Tilt Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      
-      <!-- Layer 1 -->
-      <div class="glass-card-cyber rounded-3xl p-8 space-y-4 relative group">
-        <div class="w-12 h-12 rounded-2xl bg-red-950/60 border border-red-500/40 text-red-400 flex items-center justify-center">
-          <i data-lucide="zap" class="w-6 h-6"></i>
+
+      <!-- Card 1 -->
+      <div
+        class="tilt-card bg-white border border-slate-200/80 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:border-emerald-500/40 space-y-4">
+        <div
+          class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+          <i data-lucide="laptop" class="w-6 h-6"></i>
         </div>
-        <span class="text-xs font-mono font-bold text-red-400 uppercase tracking-widest block">LAYER 1 &bull; FAST REGEX</span>
-        <h3 class="text-xl font-bold text-white leading-snug">Sub-10ms Structural Pattern Matching</h3>
-        <p class="text-slate-400 text-xs leading-relaxed">
-          High-speed regex engine catches AWS keys, Stripe tokens, GitHub PATs, JWTs, credit cards, Aadhaar, and passwords before AI inference starts.
+        <h3 class="text-xl font-bold text-slate-900 leading-snug">Browser-Only Execution</h3>
+        <p class="text-slate-600 text-xs leading-relaxed">
+          100% of data processing occurs inside your client browser RAM. No text or images ever leave your laptop or
+          workstation.
         </p>
       </div>
 
-      <!-- Layer 2 -->
-      <div class="glass-card-cyber rounded-3xl p-8 space-y-4 relative group border-emerald-500/30 shadow-emerald-500/10">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
-          <i data-lucide="cpu" class="w-6 h-6"></i>
+      <!-- Card 2 -->
+      <div
+        class="tilt-card bg-white border border-slate-200/80 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:border-emerald-500/40 space-y-4">
+        <div
+          class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+          <i data-lucide="cloud-off" class="w-6 h-6"></i>
         </div>
-        <span class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-widest block">LAYER 2 &bull; WEBGPU PIPELINE</span>
-        <h3 class="text-xl font-bold text-white leading-snug">Hardware-Accelerated Browser Shaders</h3>
-        <p class="text-slate-400 text-xs leading-relaxed">
-          Direct WebGPU tensor execution leverages Apple Silicon M-series unified memory and Nvidia GPUs for 60+ tokens/sec on-device execution.
+        <h3 class="text-xl font-bold text-slate-900 leading-snug">Zero Cloud Processing</h3>
+        <p class="text-slate-600 text-xs leading-relaxed">
+          Eliminate cloud LLM data leakage risks. Zero external API calls, zero remote telemetry, and zero network data
+          transmissions.
         </p>
       </div>
 
-      <!-- Layer 3 -->
-      <div class="glass-card-cyber rounded-3xl p-8 space-y-4 relative group">
-        <div class="w-12 h-12 rounded-2xl bg-cyan-950/60 border border-cyan-500/40 text-cyan-400 flex items-center justify-center">
+      <!-- Card 3 -->
+      <div
+        class="tilt-card bg-white border border-slate-200/80 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:border-emerald-500/40 space-y-4">
+        <div
+          class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
           <i data-lucide="brain" class="w-6 h-6"></i>
         </div>
-        <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest block">LAYER 3 &bull; GEMMA 2B SCAN</span>
-        <h3 class="text-xl font-bold text-white leading-snug">Contextual Semantic AI Intelligence</h3>
-        <p class="text-slate-400 text-xs leading-relaxed">
-          Gemma 2B LLM redacts unformatted names, clinical notes, addresses, internal hostnames, and project codenames that pattern regex misses.
+        <h3 class="text-xl font-bold text-slate-900 leading-snug">AI Contextual Intelligence</h3>
+        <p class="text-slate-600 text-xs leading-relaxed">
+          On-device Gemma 2B LLM redacts unformatted names, clinical notes, addresses, and internal codenames pattern
+          regex misses.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div
+        class="tilt-card bg-white border border-slate-200/80 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:border-emerald-500/40 space-y-4">
+        <div
+          class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+          <i data-lucide="zap" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 leading-snug">Sub-10ms Fast Regex</h3>
+        <p class="text-slate-600 text-xs leading-relaxed">
+          Instant pattern engine instantly sanitizes AWS keys, Stripe tokens, GitHub PATs, JWTs, credit cards, Aadhaar,
+          and passwords.
+        </p>
+      </div>
+
+      <!-- Card 5 -->
+      <div
+        class="tilt-card bg-white border border-slate-200/80 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:border-emerald-500/40 space-y-4">
+        <div
+          class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+          <i data-lucide="wifi-off" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 leading-snug">Offline Architecture</h3>
+        <p class="text-slate-600 text-xs leading-relaxed">
+          Fully operational without internet access. Air-gap mode locks local loopback for complete isolation.
+        </p>
+      </div>
+
+      <!-- Card 6 -->
+      <div
+        class="tilt-card bg-white border border-slate-200/80 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:border-emerald-500/40 space-y-4">
+        <div
+          class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center">
+          <i data-lucide="shield" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 leading-snug">Enterprise-Grade Privacy</h3>
+        <p class="text-slate-600 text-xs leading-relaxed">
+          Cryptographic security audit certificates generated locally for compliance verification and audit trails.
         </p>
       </div>
 
     </div>
   </section>
 
-  <!-- 5. BENCHMARK COMPARISON CALCULATOR SECTION -->
-  <section id="benchmarkSection" class="py-16 px-6 bg-slate-950/80 border-t border-slate-900">
-    <div class="max-w-7xl mx-auto space-y-10">
-      
+  <!-- 4. SECTION: INTERACTIVE PRODUCT JOURNEY (Horizontal Timeline) -->
+  <section class="py-20 px-8 bg-white border-y border-slate-200/80">
+    <div class="max-w-7xl mx-auto space-y-12">
       <div class="text-center max-w-3xl mx-auto space-y-3">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-950/50 border border-purple-500/30 text-purple-300 text-xs font-mono font-bold">
-          <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-400"></i>
-          <span>TELEMETRY & SPEED BENCHMARKS</span>
+        <div
+          class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#047857] text-xs font-mono font-bold">
+          <i data-lucide="route" class="w-4 h-4 text-emerald-600"></i>
+          <span>PRODUCT PIPELINE JOURNEY</span>
         </div>
-        <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
-          Cloud LLM API vs. StealthScrub On-Device AI
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          How Data Moves Safely Through StealthScrub
         </h2>
+        <p class="text-slate-600 text-sm">
+          Click any step to experience the operational workflow on the Dashboard.
+        </p>
       </div>
 
-      <!-- Comparison Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        
-        <!-- Cloud LLM -->
-        <div class="glass-card-cyber rounded-3xl p-8 border-red-500/30 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <h3 class="text-lg font-bold text-red-400 flex items-center gap-2">
-              <i data-lucide="cloud-off" class="w-5 h-5"></i> Cloud Redaction APIs
-            </h3>
-            <span class="text-[10px] font-mono bg-red-950/60 border border-red-500/30 text-red-300 px-2.5 py-1 rounded">⚠️ Cloud Egress Risk</span>
-          </div>
-          <div class="space-y-3 font-mono text-xs">
-            <div class="flex justify-between text-slate-400">
-              <span>Latency:</span>
-              <strong class="text-red-400">~1400 ms / scan</strong>
-            </div>
-            <div class="flex justify-between text-slate-400">
-              <span>Cost:</span>
-              <strong class="text-red-400">$0.003 / request</strong>
-            </div>
-            <div class="flex justify-between text-slate-400">
-              <span>Data Security:</span>
-              <strong class="text-red-400">Leaves Device</strong>
-            </div>
-          </div>
-        </div>
+      <!-- Horizontal Timeline -->
+      <div class="grid grid-cols-2 md:grid-cols-7 gap-3 text-center font-mono">
+        <!-- Step 1 -->
+        <a href="/dashboard"
+          class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer group">
+          <div
+            class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-600">
+            1</div>
+          <p class="text-xs font-bold text-slate-900">User Input</p>
+        </a>
 
-        <!-- StealthScrub Local Engine -->
-        <div class="glass-card-cyber rounded-3xl p-8 border-emerald-500/50 space-y-4 shadow-emerald-500/10">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-5 h-5"></i> StealthScrub AI
-            </h3>
-            <span class="text-[10px] font-mono bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 px-2.5 py-1 rounded font-bold">🟢 100% On-Device</span>
-          </div>
-          <div class="space-y-3 font-mono text-xs">
-            <div class="flex justify-between text-slate-400">
-              <span>Latency:</span>
-              <strong class="text-emerald-400">&lt; 85 ms / scan</strong>
-            </div>
-            <div class="flex justify-between text-slate-400">
-              <span>Cost:</span>
-              <strong class="text-emerald-400">$0.00 / request</strong>
-            </div>
-            <div class="flex justify-between text-slate-400">
-              <span>Data Security:</span>
-              <strong class="text-emerald-400">0 KB Air-Gapped</strong>
-            </div>
-          </div>
-        </div>
+        <!-- Step 2 -->
+        <a href="/dashboard"
+          class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer group">
+          <div
+            class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-600">
+            2</div>
+          <p class="text-xs font-bold text-slate-900">Upload</p>
+        </a>
 
+        <!-- Step 3 -->
+        <a href="/dashboard"
+          class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer group">
+          <div
+            class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-600">
+            3</div>
+          <p class="text-xs font-bold text-slate-900">OCR Scan</p>
+        </a>
+
+        <!-- Step 4 -->
+        <a href="/dashboard"
+          class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer group">
+          <div
+            class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-600">
+            4</div>
+          <p class="text-xs font-bold text-slate-900">Regex Engine</p>
+        </a>
+
+        <!-- Step 5 -->
+        <a href="/dashboard"
+          class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer group">
+          <div
+            class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-600">
+            5</div>
+          <p class="text-xs font-bold text-slate-900">Gemma AI</p>
+        </a>
+
+        <!-- Step 6 -->
+        <a href="/dashboard"
+          class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer group">
+          <div
+            class="w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center mx-auto mb-2 group-hover:bg-emerald-600">
+            6</div>
+          <p class="text-xs font-bold text-slate-900">Redaction</p>
+        </a>
+
+        <!-- Step 7 -->
+        <a href="/dashboard"
+          class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer group col-span-2 md:col-span-1">
+          <div
+            class="w-8 h-8 rounded-full bg-[#064e3b] text-white font-bold text-xs flex items-center justify-center mx-auto mb-2">
+            7</div>
+          <p class="text-xs font-bold text-slate-900">Download</p>
+        </a>
       </div>
-
     </div>
   </section>
 
-  <!-- 6. SECURITY LOGS TERMINAL STREAM SECTION -->
-  <section id="logsSection" class="py-16 px-6 max-w-7xl mx-auto w-full space-y-8">
+  <!-- 5. SECTION: TECHNOLOGY STACK (Interactive Ecosystem) -->
+  <section id="technology" class="py-20 px-8 max-w-7xl mx-auto w-full space-y-12">
     <div class="text-center max-w-3xl mx-auto space-y-3">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/50 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
-        <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i>
-        <span>REAL-TIME AUDIT STREAM</span>
+      <div
+        class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#047857] text-xs font-mono font-bold">
+        <i data-lucide="cpu" class="w-4 h-4 text-emerald-600"></i>
+        <span>INTERACTIVE TECH ECOSYSTEM</span>
       </div>
-      <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
-        Live Security Surveillance Console
+      <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Powered by High-Performance On-Device Web Tech
+      </h2>
+      <p class="text-slate-600 text-sm">Hover over any component to explore its role in zero-cloud redaction.</p>
+    </div>
+
+    <!-- Tech Ecosystem Nodes Interactive Box -->
+    <div
+      class="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl relative min-h-[380px] flex items-center justify-center">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl font-mono text-center">
+        <!-- Central Gemma Node -->
+        <div
+          class="col-span-2 md:col-span-4 p-6 rounded-2xl bg-emerald-50 border-2 border-emerald-500 text-slate-900 shadow-lg cursor-pointer group">
+          <i data-lucide="brain"
+            class="w-8 h-8 text-emerald-600 mx-auto mb-2 group-hover:scale-110 transition-transform"></i>
+          <h3 class="text-lg font-bold">Gemma 2B Local Neural Model</h3>
+          <p class="text-xs text-slate-600 mt-1">Contextual semantic PII scanner running via local Ollama instance.</p>
+        </div>
+
+        <!-- Node 1 -->
+        <div
+          class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer">
+          <i data-lucide="zap" class="w-5 h-5 text-amber-500 mx-auto mb-1"></i>
+          <p class="text-xs font-bold text-slate-900">WebGPU Shaders</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Hardware acceleration</p>
+        </div>
+
+        <!-- Node 2 -->
+        <div
+          class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer">
+          <i data-lucide="file-search" class="w-5 h-5 text-indigo-500 mx-auto mb-1"></i>
+          <p class="text-xs font-bold text-slate-900">OCR Engine</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Local image text recognition</p>
+        </div>
+
+        <!-- Node 3 -->
+        <div
+          class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer">
+          <i data-lucide="code" class="w-5 h-5 text-red-500 mx-auto mb-1"></i>
+          <p class="text-xs font-bold text-slate-900">Regex Engine</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Sub-10ms structural match</p>
+        </div>
+
+        <!-- Node 4 -->
+        <div
+          class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-500 transition-all cursor-pointer">
+          <i data-lucide="user-check" class="w-5 h-5 text-emerald-600 mx-auto mb-1"></i>
+          <p class="text-xs font-bold text-slate-900">MediaPipe</p>
+          <p class="text-[10px] text-slate-500 mt-0.5">Local face blur overlay</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. SECTION: AI THREAT DETECTION UNIVERSE (Orbital Visualization) -->
+  <section class="py-20 px-8 bg-slate-900 text-white border-y border-slate-800 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto space-y-12">
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <div
+          class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold">
+          <i data-lucide="globe" class="w-4 h-4 text-emerald-400"></i>
+          <span>ORBITAL THREAT NEUTRALIZER</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-black tracking-tight">
+          Neutralizing Every Threat Category Locally
+        </h2>
+        <p class="text-slate-400 text-sm">Hover on any orbiting payload to watch StealthScrub transform it into a
+          redacted token.</p>
+      </div>
+
+      <!-- Orbital Interactive Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 max-w-4xl mx-auto font-mono text-center" id="orbitalGrid">
+        <div
+          class="orbital-item p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-400 transition-all cursor-pointer"
+          data-tag="[PASSWORD_REDACTED]">
+          <p class="text-xs font-bold text-red-400">Passwords</p>
+          <span class="text-[10px] text-slate-500 block mt-1">password = '...'</span>
+        </div>
+        <div
+          class="orbital-item p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-400 transition-all cursor-pointer"
+          data-tag="[API_KEY_REDACTED]">
+          <p class="text-xs font-bold text-amber-400">API Keys</p>
+          <span class="text-[10px] text-slate-500 block mt-1">sk_live_... / AKIA...</span>
+        </div>
+        <div
+          class="orbital-item p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-400 transition-all cursor-pointer"
+          data-tag="[CREDIT_CARD_REDACTED]">
+          <p class="text-xs font-bold text-cyan-400">Credit Cards</p>
+          <span class="text-[10px] text-slate-500 block mt-1">4532 7810 ...</span>
+        </div>
+        <div
+          class="orbital-item p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-400 transition-all cursor-pointer"
+          data-tag="[AADHAAR_REDACTED]">
+          <p class="text-xs font-bold text-emerald-400">Aadhaar</p>
+          <span class="text-[10px] text-slate-500 block mt-1">9876 5432 ...</span>
+        </div>
+        <div
+          class="orbital-item p-4 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-400 transition-all cursor-pointer"
+          data-tag="[PAN_REDACTED]">
+          <p class="text-xs font-bold text-purple-400">PAN Card</p>
+          <span class="text-[10px] text-slate-500 block mt-1">ABCDE1234F</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. SECTION: BEFORE VS AFTER (Interactive Comparison Slider) -->
+  <section class="py-20 px-8 max-w-7xl mx-auto w-full space-y-12">
+    <div class="text-center max-w-3xl mx-auto space-y-3">
+      <div
+        class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[#047857] text-xs font-mono font-bold">
+        <i data-lucide="split" class="w-4 h-4 text-emerald-600"></i>
+        <span>BEFORE & AFTER DEMONSTRATION</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Instant Transformation from Exposed to Protected
       </h2>
     </div>
 
-    <!-- Live Terminal Box -->
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl max-w-4xl mx-auto font-mono text-xs">
-      <div class="bg-slate-950 px-5 py-3 border-b border-slate-800 flex items-center justify-between text-slate-400">
-        <div class="flex items-center gap-2">
-          <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
-          <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
-          <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
-          <span class="ml-2 text-slate-200 font-bold">root@stealthscrub:~/logs/live_stream</span>
+    <!-- Before / After Visual Card -->
+    <div
+      class="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl max-w-4xl mx-auto font-mono text-xs space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Before -->
+        <div class="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-900 leading-relaxed">
+          <p class="font-bold uppercase text-[10px] text-red-600 mb-2">RAW ORIGINAL DOCUMENT (EXPOSED)</p>
+          <code>const serverConfig = {<br>
+  awsAccessKey: "AKIA_SAMPLE_AWS_ACCESS_KEY_ID",<br>
+  stripeKey: "sk_live_sample_stripe_key_placeholder...",<br>
+  password: "sample_password_placeholder",<br>
+  email: "dev-lead@stealthscrub.internal"<br>
+};</code>
         </div>
-        <span class="text-[10px] text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">LOCAL_ONLY</span>
+
+        <!-- After -->
+        <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 leading-relaxed">
+          <p class="font-bold uppercase text-[10px] text-emerald-700 mb-2">STEALTHSCRUB SANITIZED OUTPUT</p>
+          <code>const serverConfig = {<br>
+  awsAccessKey: "[API_KEY_REDACTED]",<br>
+  stripeKey: "[API_KEY_REDACTED]",<br>
+  password: "[PASSWORD_REDACTED]",<br>
+  email: "[EMAIL_REDACTED]"<br>
+};</code>
+        </div>
       </div>
 
-      <div id="securityLogTerminal" class="p-5 text-slate-300 space-y-2 h-72 overflow-y-auto leading-relaxed select-text bg-[#05070a]">
-        <p><span class="text-slate-500">10:48:41</span> <span class="text-emerald-400">[LOCAL]</span> Redaction scan started: document_scan_v4.pdf</p>
-        <p><span class="text-slate-500">10:48:44</span> <span class="text-emerald-400">[LOCAL]</span> System health: Nominal.</p>
-        <p><span class="text-slate-500">10:48:48</span> <span class="text-emerald-400">[LOCAL]</span> Applied Gaussian blur to sensitive regions.</p>
-        <p><span class="text-slate-500">10:48:54</span> <span class="text-emerald-400">[LOCAL]</span> PII Detected: Email Address (94% confidence)</p>
-        <p><span class="text-slate-500">10:48:57</span> <span class="text-emerald-400">[LOCAL]</span> Hash generated for audit trail: 8f2d...4a12</p>
-      </div>
-
-      <div class="bg-slate-950 p-3.5 border-t border-slate-800 flex items-center justify-between gap-3">
-        <div class="flex items-center gap-2 flex-1">
-          <span class="text-emerald-400 font-bold">&gt;</span>
-          <input type="text" id="terminalInput" placeholder="Type command (e.g. status, benchmark, purge)..." class="w-full bg-transparent border-none focus:outline-none text-slate-200 placeholder-slate-600">
-        </div>
-        <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> LIVE STREAM
-        </span>
+      <div class="text-center pt-4">
+        <a href="/dashboard"
+          class="bg-[#064e3b] hover:bg-[#047857] text-white px-8 py-3 rounded-full text-xs font-black tracking-wider uppercase inline-flex items-center gap-2 shadow-md">
+          <i data-lucide="play" class="w-4 h-4"></i> TRY IT YOURSELF ON DASHBOARD
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- 7. FOOTER & LAUNCH BANNER -->
-  <footer class="mt-auto border-t border-slate-900 bg-slate-950/90 py-12 px-6">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-500 font-mono">
+  <!-- 8. SECTION: FEATURE GRID & MODALS -->
+  <section class="py-20 px-8 bg-slate-900 text-white border-t border-slate-800">
+    <div class="max-w-7xl mx-auto space-y-12">
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <h2 class="text-3xl sm:text-5xl font-black tracking-tight">Enterprise Privacy Features</h2>
+        <p class="text-slate-400 text-sm">Explore core engine capabilities and jump directly to active modules.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+          <h3 class="text-base font-bold text-emerald-400">Local OCR & Canvas Masking</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Extract and mask text from images directly inside HTML5
+            canvas.</p>
+          <a href="/dashboard" class="text-xs font-bold text-emerald-400 hover:underline block pt-2">Open Dashboard
+            &rarr;</a>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+          <h3 class="text-base font-bold text-emerald-400">Cryptographic Audit Trails</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Generate signed security certificates for internal data
+            compliance.</p>
+          <a href="/history" class="text-xs font-bold text-emerald-400 hover:underline block pt-2">View History
+            &rarr;</a>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+          <h3 class="text-base font-bold text-emerald-400">Real-Time Security Surveillance</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Monitor local memory utilization, WebGPU state, and
+            redaction counts.</p>
+          <a href="/security-logs" class="text-xs font-bold text-emerald-400 hover:underline block pt-2">View Security
+            Logs &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. SECTION: APPLICATION PREVIEWS -->
+  <section class="py-20 px-8 max-w-7xl mx-auto w-full space-y-12">
+    <div class="text-center max-w-3xl mx-auto space-y-3">
+      <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">Explore the Application Modules</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Preview 1 -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm space-y-4">
+        <h3 class="text-lg font-bold text-slate-900">Operational Dashboard</h3>
+        <p class="text-xs text-slate-500">Live redactor workspace with drag-and-drop, clipboard paste, sensitivity
+          selectors, and dual-pass execution.</p>
+        <a href="/dashboard" class="bg-[#064e3b] text-white px-5 py-2 rounded-full text-xs font-bold inline-block">Open
+          Dashboard</a>
+      </div>
+
+      <!-- Preview 2 -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm space-y-4">
+        <h3 class="text-lg font-bold text-slate-900">Scrub History Archive</h3>
+        <p class="text-xs text-slate-500">Searchable archive table of previous redaction sessions with security score
+          indicators.</p>
+        <a href="/history" class="bg-[#064e3b] text-white px-5 py-2 rounded-full text-xs font-bold inline-block">Open
+          Scrub History</a>
+      </div>
+
+      <!-- Preview 3 -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm space-y-4">
+        <h3 class="text-lg font-bold text-slate-900">Security Logs Terminal</h3>
+        <p class="text-xs text-slate-500">Real-time surveillance terminal streaming on-device events, RAM checks, and
+          threat blocks.</p>
+        <a href="/security-logs"
+          class="bg-[#064e3b] text-white px-5 py-2 rounded-full text-xs font-bold inline-block">Open Security Logs</a>
+      </div>
+
+      <!-- Preview 4 -->
+      <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm space-y-4">
+        <h3 class="text-lg font-bold text-slate-900">Node Settings</h3>
+        <p class="text-xs text-slate-500">Configure local Ollama endpoints, Gemma 2B model weights, and air-gap network
+          locks.</p>
+        <a href="/settings" class="bg-[#064e3b] text-white px-5 py-2 rounded-full text-xs font-bold inline-block">Open
+          Settings</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 py-12 px-8 border-t border-slate-800 text-xs font-mono">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
           <i data-lucide="shield" class="w-4 h-4"></i>
         </div>
-        <p>StealthScrub AI &bull; 100% Offline Zero-Cloud Privacy Vault</p>
+        <p class="text-white font-bold">StealthScrub AI &bull; Flagship Zero-Cloud Privacy Platform</p>
       </div>
 
-      <div class="flex items-center gap-6">
-        <a href="https://github.com/realrichelle19/StealthScrubAI.git" target="_blank" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-          <i data-lucide="github" class="w-4 h-4"></i> GitHub Repository
-        </a>
-        <span>Node.js + WebGPU + Gemma 2B</span>
-        <span class="text-slate-400 font-bold">v4.2.0-STABLE</span>
+      <div class="flex flex-wrap items-center gap-6">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/docs" class="hover:text-white">Documentation</a>
+        <a href="/dashboard" class="hover:text-white">Dashboard</a>
+        <a href="/history" class="hover:text-white">Scrub History</a>
+        <a href="/security-logs" class="hover:text-white">Security Logs</a>
+        <a href="/settings" class="hover:text-white">Settings</a>
+        <a href="https://github.com/realrichelle19/StealthScrubAI.git" target="_blank"
+          class="hover:text-white">GitHub</a>
       </div>
+    </div>
+
+    <div
+      class="max-w-7xl mx-auto mt-8 pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4 text-[11px]">
+      <div class="flex items-center gap-3">
+        <span class="px-2.5 py-1 rounded bg-slate-800 text-emerald-400 font-bold">100% Offline</span>
+        <span class="px-2.5 py-1 rounded bg-slate-800 text-cyan-400 font-bold">WebGPU Enabled</span>
+        <span class="px-2.5 py-1 rounded bg-slate-800 text-white font-bold">Gemma 2B Powered</span>
+      </div>
+      <p>&copy; 2026 StealthScrub AI. All Rights Reserved.</p>
     </div>
   </footer>
 
-  <!-- Toast Notification Container -->
-  <div id="toastContainer"></div>
-
-  <!-- Main JavaScript App & 3D WebGL Vault Script -->
   <script src="app.js"></script>
 </body>
 

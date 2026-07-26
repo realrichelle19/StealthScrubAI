@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StealthScrub AI - Scrub History</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-[#f8fafc] text-slate-800 min-h-screen font-sans flex antialiased">
+  <div class="flex w-full min-h-screen">
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-64 bg-white border-r border-slate-200/80 p-6 flex flex-col justify-between shrink-0 shadow-sm z-20">
+      <div>
+        <a href="/" class="flex items-center gap-3 mb-8 cursor-pointer">
+          <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shadow-md">
+            <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+          </div>
+          <h1 class="text-xl font-extrabold tracking-tight text-slate-900">StealthScrub</h1>
+        </a>
+
+        <nav class="space-y-1.5">
+          <a href="/" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span>Home</span>
+          </a>
+          <a href="/dashboard" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/history" class="sidebar-nav-btn active w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-bold transition-all">
+            <i data-lucide="history" class="w-5 h-5"></i>
+            <span>Scrub History</span>
+          </a>
+          <a href="/security-logs" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
+            <i data-lucide="shield" class="w-5 h-5"></i>
+            <span>Security Logs</span>
+          </a>
+          <a href="/settings" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
+            <i data-lucide="settings" class="w-5 h-5"></i>
+            <span>Settings</span>
+          </a>
+          <a href="/docs" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
+            <i data-lucide="book-open" class="w-5 h-5"></i>
+            <span>Documentation</span>
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 p-8 space-y-6 overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase tracking-wider mb-1">
+            <i data-lucide="history" class="w-4 h-4"></i> ARCHIVE PROTOCOL
+          </div>
+          <h2 class="text-3xl font-extrabold text-slate-900">Scrub History</h2>
+        </div>
+        <div class="flex items-center gap-4 font-mono">
+          <div class="bg-slate-100 border border-slate-200/80 rounded-2xl px-6 py-3 text-right">
+            <p class="text-[10px] font-bold text-slate-400 uppercase">TOTAL SCRUBBED</p>
+            <p class="text-2xl font-extrabold text-emerald-600">1,284</p>
+          </div>
+          <div class="bg-slate-100 border border-slate-200/80 rounded-2xl px-6 py-3 text-right">
+            <p class="text-[10px] font-bold text-slate-400 uppercase">THREATS NEUTRALIZED</p>
+            <p class="text-2xl font-extrabold text-slate-900">42,091</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+        <input type="text" placeholder="Search logs by filename..." class="bg-slate-100 border border-slate-200 rounded-full px-5 py-2.5 text-xs w-80">
+        <button id="exportHistoryBtn" class="bg-[#064e3b] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-md">Export Logs</button>
+      </div>
+
+      <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm flex-1">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-100/70 border-b border-slate-200 text-[11px] font-mono font-bold text-slate-500 uppercase">
+              <th class="px-6 py-4">FILENAME</th>
+              <th class="px-6 py-4">SANITIZATION TYPE</th>
+              <th class="px-6 py-4">TIMESTAMP</th>
+              <th class="px-6 py-4 text-center">SECURITY SCORE</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-xs font-medium text-slate-700">
+            <tr>
+              <td class="px-6 py-4 font-semibold text-slate-900">financial_report_q3_final.pdf</td>
+              <td class="px-6 py-4"><span class="px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 text-[10px] font-bold font-mono">TEXT REDACTION</span></td>
+              <td class="px-6 py-4 font-mono text-slate-500">2023-10-24 14:02:11</td>
+              <td class="px-6 py-4 text-center"><span class="inline-flex items-center justify-center w-9 h-9 rounded-full border-2 border-emerald-500 text-emerald-700 font-bold font-mono">90%</span></td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-semibold text-slate-900">slack_screenshot_prod_issue.png</td>
+              <td class="px-6 py-4"><span class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-[10px] font-bold font-mono">SCREENSHOT MASK</span></td>
+              <td class="px-6 py-4 font-mono text-slate-500">2023-10-24 13:45:50</td>
+              <td class="px-6 py-4 text-center"><span class="inline-flex items-center justify-center w-9 h-9 rounded-full border-2 border-emerald-500 text-emerald-700 font-bold font-mono">100%</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+
+</html>
