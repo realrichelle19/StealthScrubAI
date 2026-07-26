@@ -64,6 +64,13 @@ function applyRegexRedactions(text) {
     return match.replace(/[:=]\s*(?:['"].*?['"]|\S+)/, ': [PASSWORD_REDACTED]');
   });
 
+  // 3b. Database Connection URIs (e.g. postgres://user:password@host:port/db)
+  const dbUriRegex = /(mongodb(?:\+srv)?|postgres(?:ql)?|mysql|redis):\/\/([^:]+):([^@]+)@/gi;
+  redactedText = redactedText.replace(dbUriRegex, (m, proto, user) => {
+    counts.password++;
+    return `${proto}://${user}:[PASSWORD_REDACTED]@`;
+  });
+
   // 4. Known API Keys (Stripe, AWS, GitHub, OpenAI, Gemini, Slack, Discord)
   const prefixedKeyRegex = /\b(?:sk_live|sk_test|pk_live|pk_test)_[0-9a-zA-Z]{24,}\b|\bgh[pousr]_[0-9a-zA-Z]{36}\b|\bgithub_pat_[0-9a-zA-Z_]{82}\b|\bAKIA[0-9A-Z]{16}\b|\bAIzaSy[0-9A-Za-z_-]{33}\b|\bsk-[a-zA-Z0-9]{32,48}\b|\bsk-proj-[a-zA-Z0-9_-]{40,}\b|\bxox[baprs]-[0-9a-zA-Z]{10,48}\b/gi;
   redactedText = redactedText.replace(prefixedKeyRegex, () => {
