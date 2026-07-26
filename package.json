@@ -1,0 +1,28 @@
+{
+  "name": "stealthscrub-ai",
+  "version": "1.0.0",
+  "description": "Local PII & Sensitive Data Redaction Engine using Regex and Ollama Gemma 2 2B",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "pii",
+    "redaction",
+    "privacy",
+    "ollama",
+    "gemma2",
+    "express",
+    "ocr"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "tesseract.js": "^5.1.0"
+  }
+}

@@ -1,0 +1,132 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   StealthScrub AI — Light UI Theme & Presentation System
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Sidebar Navigation Active State ───────────────────────────────────── */
+.sidebar-nav-btn.active {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3) !important;
+}
+.sidebar-nav-btn.active i {
+  color: #ffffff !important;
+}
+
+/* ─── Custom Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(241, 245, 249, 0.6); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: rgba(203, 213, 225, 0.8); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.6); }
+
+/* ─── Redaction Badge System (Color-Coded Inline Tokens) ────────────────── */
+
+/* Red Badges — Credentials / API Keys / Passwords */
+.tag-redacted-red {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.85em;
+  display: inline-block;
+  margin: 1px 2px;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.tag-redacted-red:hover {
+  background-color: rgba(239, 68, 68, 0.25);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Amber Badges — Passwords */
+.tag-redacted-yellow {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.85em;
+  display: inline-block;
+  margin: 1px 2px;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.tag-redacted-yellow:hover {
+  background-color: rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Cyan/Green Badges — Contextual PII / Internal Hosts / Names */
+.tag-redacted-cyan {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.85em;
+  display: inline-block;
+  margin: 1px 2px;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.tag-redacted-cyan:hover {
+  background-color: rgba(16, 185, 129, 0.25);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ─── Cross-Highlight Glow Effect on Input ──────────────────────────────── */
+.input-highlight-glow {
+  border-color: rgba(16, 185, 129, 0.8) !important;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* ─── Toast Notification Styling ────────────────────────────────────────── */
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+@keyframes toastSlideOut {
+  from { opacity: 1; transform: translate(-50%, 0); }
+  to   { opacity: 0; transform: translate(-50%, 20px); }
+}
+.toast-notification {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: rgba(6, 78, 59, 0.95);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  animation: toastSlideIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.toast-notification.toast-exit {
+  animation: toastSlideOut 0.25s ease-in forwards;
+}
+
+/* ─── Drag Zone Polish ─────────────────────────────────────────────────── */
+#dropZone.drag-active {
+  border-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.05) !important;
+}
