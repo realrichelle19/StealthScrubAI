@@ -649,9 +649,23 @@ Internal Hospital Host: med-records.internal.local (10.0.4.15)`
   }
 
   async function performScrubbing() {
+    const isImageTab = tabImageBtn && tabImageBtn.classList.contains('bg-white');
+
+    if (isImageTab) {
+      if (!currentUploadedFile) {
+        showToast('⚠️ Please select or drop an image first.', 'warning');
+        return;
+      }
+      const imgObj = document.getElementById('imagePreview');
+      if (imgObj && imgObj.src) {
+        performImageOcrScrub(currentUploadedFile, imgObj);
+      }
+      return;
+    }
+
     if (!rawTextInput) return;
     const text = rawTextInput.value.trim();
-    if (!text && !currentUploadedFile) {
+    if (!text) {
       showToast('⚠️ Please paste text or select a judge preset.', 'warning');
       return;
     }
