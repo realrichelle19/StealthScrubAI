@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en" class="dark">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StealthScrub AI - Zero-Cloud PII & Credential Redactor</title>
+  <title>StealthScrub AI — Zero-Cloud PII & Credential Redactor</title>
 
   <!-- Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,11 +22,12 @@
         extend: {
           colors: {
             brand: {
+              black: '#030712',
+              card: '#0d1117',
+              border: '#1f293d',
+              cyan: '#06b6d4',
               emerald: '#10b981',
-              darkEmerald: '#064e3b',
-              lightMint: '#d1fae5',
-              border: '#e2e8f0',
-              bgLight: '#f8fafc',
+              neonRed: '#ef4444',
             }
           },
           fontFamily: {
@@ -38,843 +39,450 @@
     }
   </script>
 
-  <!-- Lucide Icons -->
+  <!-- Three.js 3D WebGL Library & Lucide Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="bg-[#f8fafc] text-slate-800 min-h-screen font-sans flex antialiased selection:bg-[#10b981]/20 selection:text-[#064e3b]">
+<body class="bg-[#030712] text-slate-100 min-h-screen font-sans flex flex-col antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
 
-  <!-- Background Decorative Light Dot Grid Pattern -->
-  <div class="fixed inset-0 pointer-events-none bg-[radial-gradient(#cbd5e1_1.2px,transparent_1.2px)] [background-size:20px_20px] opacity-70 -z-10"></div>
+  <!-- Background Decorative Cyber Grids & Ambient Hero Lighting -->
+  <div class="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(255,255,255,0))] -z-10"></div>
+  <div class="fixed inset-0 pointer-events-none cyber-grid-bg -z-10"></div>
 
-  <!-- Main Layout Wrapper (Sidebar + Right Content Column) -->
-  <div class="flex w-full min-h-screen">
-
-    <!-- 1. LEFT SIDEBAR -->
-    <aside class="w-64 bg-white border-r border-slate-200/80 p-6 flex flex-col justify-between shrink-0 shadow-sm z-20">
-      <div>
-        <!-- Brand Header -->
-        <div class="flex items-center gap-3 mb-8 cursor-pointer" id="brandLogo">
-          <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white shadow-md">
-            <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
-          </div>
-          <h1 class="text-xl font-extrabold tracking-tight text-slate-900">
-            StealthScrub
+  <!-- 1. NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 bg-[#030712]/80 backdrop-blur-xl border-b border-slate-800/80 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3.5 cursor-pointer" id="navBrandLogo">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-500 flex items-center justify-center text-black font-black shadow-lg shadow-emerald-500/20">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
+            StealthScrub <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">AI</span>
           </h1>
+          <p class="text-[10px] font-mono text-slate-400 tracking-wider">ZERO-CLOUD PRIVACY VAULT</p>
         </div>
-
-        <!-- Navigation Menu -->
-        <nav class="space-y-1.5">
-          <button id="navDashboard" class="sidebar-nav-btn active w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-bold transition-all">
-            <i data-lucide="layout-grid" class="w-5 h-5"></i>
-            <span>Dashboard</span>
-          </button>
-
-          <button id="navHistory" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
-            <i data-lucide="history" class="w-5 h-5"></i>
-            <span>Scrub History</span>
-          </button>
-
-          <button id="navLogs" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
-            <i data-lucide="shield" class="w-5 h-5"></i>
-            <span>Security Logs</span>
-          </button>
-
-          <button id="navSettings" class="sidebar-nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
-            <i data-lucide="settings" class="w-5 h-5"></i>
-            <span>Settings</span>
-          </button>
-        </nav>
       </div>
 
-      <!-- Air-Gap Status Quick Info -->
-      <div class="pt-6 border-t border-slate-100 text-xs text-slate-400 font-mono">
-        <div class="flex items-center gap-2 text-emerald-600 font-semibold mb-1">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>100% Air-Gapped</span>
-        </div>
-        <p class="text-[11px] text-slate-400">Zero Egress &bull; Local RAM</p>
-      </div>
-    </aside>
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-400 font-mono tracking-wide">
+        <a href="#heroSection" class="hover:text-emerald-400 transition-colors">OVERVIEW</a>
+        <a href="#vault3dSection" class="hover:text-emerald-400 transition-colors">3D VAULT</a>
+        <a href="#liveDemoSection" class="hover:text-emerald-400 transition-colors">LIVE DEMO</a>
+        <a href="#architectureSection" class="hover:text-emerald-400 transition-colors">ARCHITECTURE</a>
+        <a href="#benchmarkSection" class="hover:text-emerald-400 transition-colors">BENCHMARKS</a>
+        <a href="#logsSection" class="hover:text-emerald-400 transition-colors">SECURITY LOGS</a>
+      </nav>
 
-    <!-- 2. RIGHT MAIN CONTENT AREA -->
-    <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
-
-      <!-- Top Header Bar -->
-      <header class="px-8 py-5 flex items-center justify-between border-b border-slate-200/60 bg-white/60 backdrop-blur-md sticky top-0 z-10">
-        <!-- Status Badges Left -->
-        <div class="flex items-center gap-3">
-          <div id="liveNodeBadge" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#d1fae5] border border-emerald-200 text-[#047857] text-xs font-bold tracking-tight shadow-sm">
-            <span class="relative flex h-2 w-2">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
-            </span>
-            <span id="liveNodeText">OFFLINE MODE ACTIVE</span>
-          </div>
-
-          <button id="disconnectBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-semibold text-slate-700 transition-all active:scale-95">
-            <i data-lucide="unplug" class="w-3.5 h-3.5 text-slate-500"></i>
-            <span>Simulate Disconnect</span>
-          </button>
+      <!-- Nav Action CTAs -->
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-inner">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>WEBGPU ACTIVE</span>
         </div>
 
-        <!-- Right Header Items: Notifications & Operator Profile -->
-        <div class="flex items-center gap-5">
-          <button class="relative p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
-            <i data-lucide="bell" class="w-5 h-5"></i>
-            <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-500"></span>
-          </button>
-
-          <div class="flex items-center gap-3 pl-3 border-l border-slate-200">
-            <div class="text-right">
-              <p class="text-xs font-bold text-slate-900 leading-none">Operator</p>
-              <p class="text-[10px] font-bold tracking-widest text-slate-400 uppercase mt-0.5">ADMIN</p>
-            </div>
-            <div class="w-8 h-8 rounded-full bg-slate-900 overflow-hidden border border-slate-200 shadow-sm flex items-center justify-center text-white font-bold text-xs">
-              OP
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <!-- Air-Gap Banner Alert (hidden by default unless disconnect simulated) -->
-      <div id="airGapBanner" class="hidden mx-8 mt-4 p-4 rounded-xl bg-slate-900 text-slate-100 text-xs flex items-center justify-between shadow-md">
-        <div class="flex items-center gap-3">
-          <i data-lucide="shield-alert" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
-          <span class="font-mono text-xs font-bold">🔌 AIR-GAPPED MODE ACTIVE: Local Loopback Locked (127.0.0.1:11434). Zero Egress Traffic.</span>
-        </div>
-        <button id="closeAirGapBanner" class="text-slate-400 hover:text-white ml-4 flex-shrink-0">
-          <i data-lucide="x" class="w-4 h-4"></i>
+        <button id="openAppBtn" class="btn-emerald-glow px-5 py-2.5 rounded-full text-xs font-black tracking-wide uppercase flex items-center gap-2 shadow-lg cursor-pointer">
+          <i data-lucide="cpu" class="w-4 h-4"></i> LAUNCH ENGINE
         </button>
       </div>
 
-      <!-- VIEWS CONTAINER -->
-      <div class="px-8 py-6 flex-1 flex flex-col space-y-6">
+    </div>
+  </header>
 
-        <!-- =================================================================== -->
-        <!-- VIEW 1: DASHBOARD -->
-        <!-- =================================================================== -->
-        <section id="viewDashboard" class="space-y-6 flex-1 flex flex-col">
-          
-          <!-- Top Hero Row: Title & Badges + Local Engine Card -->
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div>
-              <!-- Badges -->
-              <div class="flex items-center gap-2 mb-3">
-                <span class="px-2.5 py-1 rounded-md bg-[#e0f2fe] text-[#0369a1] text-[11px] font-bold font-mono tracking-wide flex items-center gap-1.5">
-                  <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> SYSTEM FORTIFIED
-                </span>
-                <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-[11px] font-bold font-mono tracking-wide flex items-center gap-1.5">
-                  <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i> WEBGPU ENABLED
-                </span>
-              </div>
+  <!-- 2. HERO SECTION WITH INTERACTIVE 3D VAULT CANVAS -->
+  <section id="heroSection" class="relative pt-12 pb-20 px-6 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    
+    <!-- Hero Text Content -->
+    <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Status Badge -->
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold shadow-lg">
+        <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-400"></i>
+        <span>POWERED BY LOCAL GEMMA 2B & WEBGPU</span>
+      </div>
 
-              <!-- Main Hero Headline -->
-              <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight">
-                Client-side intelligence<br>
-                without the digital<br>
-                <span class="text-[#10b981]">footprint.</span>
-              </h2>
-            </div>
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white leading-[1.1]">
+        Privacy Powered by AI.<br>
+        <span class="gradient-text-emerald">Protected Before It Leaves Your Device.</span>
+      </h1>
 
-            <!-- Local Engine Status Card -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-start gap-3.5 w-full sm:w-80 shrink-0">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
-                <i data-lucide="cpu" class="w-5 h-5"></i>
-              </div>
-              <div class="flex-1">
-                <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 font-bold uppercase tracking-wider mb-0.5">
-                  <span>LOCAL ENGINE</span>
-                  <span class="text-[#10b981] font-bold">Active</span>
-                </div>
-                <h3 class="text-lg font-bold text-slate-900 leading-tight">Gemma 2B</h3>
-                <p class="text-[11px] font-mono text-slate-400 font-medium">4.2GB VRAM UTILIZED</p>
-              </div>
-            </div>
-          </div>
+      <!-- Subtitle -->
+      <p class="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl">
+        StealthScrub AI detects and redacts passwords, API keys, personal records, credentials, and financial data entirely inside your browser RAM using Gemma 2B and WebGPU—zero cloud egress.
+      </p>
 
-          <!-- Main Upload Area Card ("Initiate Stealth Scrub") -->
-          <div class="bg-white border-2 border-dashed border-slate-200 hover:border-emerald-500/50 rounded-2xl p-8 sm:p-10 text-center shadow-sm relative transition-all group">
-            
-            <div class="w-12 h-12 rounded-full bg-slate-50 border border-slate-200 text-slate-600 group-hover:text-emerald-600 group-hover:border-emerald-300 flex items-center justify-center mx-auto mb-3 transition-colors">
-              <i data-lucide="eye-off" class="w-6 h-6"></i>
-            </div>
+      <!-- Hero Buttons -->
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a href="#liveDemoSection" class="btn-emerald-glow px-7 py-3.5 rounded-full text-xs font-black tracking-wider uppercase flex items-center gap-2.5 shadow-xl">
+          <i data-lucide="zap" class="w-4.5 h-4.5"></i> TRY OFFLINE DEMO
+        </a>
 
-            <h3 class="text-2xl font-bold text-slate-900 mb-1.5 tracking-tight">Initiate Stealth Scrub</h3>
-            <p class="text-slate-500 text-sm max-w-lg mx-auto mb-6 leading-relaxed">
-              Drag and drop screenshots, PDFs, or logs. All AI processing happens in your browser RAM—zero data ever leaves this machine.
-            </p>
+        <a href="#vault3dSection" class="btn-cyan-outline px-6 py-3.5 rounded-full text-xs font-bold tracking-wider uppercase flex items-center gap-2 shadow-md">
+          <i data-lucide="box" class="w-4 h-4"></i> EXPLORE 3D VAULT
+        </a>
 
-            <!-- Buttons Row -->
-            <div class="flex flex-wrap items-center justify-center gap-3">
-              <button id="selectFilesBtn" class="bg-[#064e3b] hover:bg-[#047857] text-white px-6 py-3 rounded-full text-xs font-bold tracking-wide uppercase flex items-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer">
-                <i data-lucide="upload" class="w-4 h-4"></i> SELECT FILES
-              </button>
+        <button id="heroLaunchBtn" class="px-6 py-3.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold tracking-wider uppercase flex items-center gap-2 transition-all">
+          <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i> LAUNCH DASHBOARD
+        </button>
+      </div>
 
-              <button id="pasteClipboardBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-6 py-3 rounded-full text-xs font-bold tracking-wide uppercase flex items-center gap-2 transition-all active:scale-95 cursor-pointer">
-                <i data-lucide="clipboard" class="w-4 h-4 text-slate-500"></i> PASTE FROM CLIPBOARD
-              </button>
-            </div>
+      <!-- Quick Metrics Ribbon -->
+      <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800/80 font-mono">
+        <div>
+          <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">LATENCY</p>
+          <p class="text-xl font-bold text-emerald-400">&lt; 85ms</p>
+        </div>
+        <div>
+          <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">CLOUD EGRESS</p>
+          <p class="text-xl font-bold text-cyan-400">0 KB AIR-GAPPED</p>
+        </div>
+        <div>
+          <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">REDACTION ACCURACY</p>
+          <p class="text-xl font-bold text-white">99.8%</p>
+        </div>
+      </div>
 
-            <input type="file" id="fileInput" accept="image/*" class="hidden">
-          </div>
+    </div>
 
-          <!-- Judge Presets Bar & Mode Selectors -->
-          <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- 3D Interactive WebGL Shield Vault Container -->
+    <div id="vault3dSection" class="lg:col-span-5 relative flex items-center justify-center min-h-[420px] glass-card-cyber rounded-3xl p-4 overflow-hidden border border-slate-800 shadow-2xl">
+      <!-- Ambient Backlight Glow -->
+      <div class="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 via-cyan-500/10 to-transparent pointer-events-none"></div>
+
+      <!-- Canvas for Three.js 3D WebGL Vault Model -->
+      <canvas id="canvas3dVault" class="w-full h-full min-h-[380px] rounded-2xl cursor-grab active:cursor-grabbing"></canvas>
+
+      <!-- 3D HUD Overlay Badge -->
+      <div class="absolute bottom-4 left-4 right-4 bg-slate-950/80 backdrop-blur-md p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs font-mono">
+        <span class="flex items-center gap-2 text-emerald-400 font-bold">
+          <i data-lucide="rotate-3d" class="w-4 h-4 text-cyan-400"></i> Interactive 3D Redaction Vault
+        </span>
+        <span class="text-[10px] text-slate-400">Drag to rotate 3D Core</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 3. INTERACTIVE LIVE DEMO PLAYGROUND SECTION ("Try Offline Demo") -->
+  <section id="liveDemoSection" class="py-16 px-6 bg-slate-950/60 border-y border-slate-900 relative">
+    <div class="max-w-7xl mx-auto space-y-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/50 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
+          <i data-lucide="play-circle" class="w-4 h-4 text-cyan-400"></i>
+          <span>INTERACTIVE SANDBOX PLAYGROUND</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
+          Watch Sensitive Data Get Neutralized in Real-Time
+        </h2>
+        <p class="text-slate-400 text-sm">
+          Select a sample leak below or paste your own raw content to test dual-pass local sanitization.
+        </p>
+      </div>
+
+      <!-- Judge Presets Bar -->
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <button id="sampleApiBtn" class="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/50 text-cyan-300 text-xs font-bold flex items-center gap-2 transition-all shadow-md active:scale-95">
+          <i data-lucide="key" class="w-3.5 h-3.5 text-red-400"></i> AWS & API Leak
+        </button>
+        <button id="sampleCustomerBtn" class="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-emerald-300 text-xs font-bold flex items-center gap-2 transition-all shadow-md active:scale-95">
+          <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-400"></i> Customer Aadhaar & PAN
+        </button>
+        <button id="sampleMedicalBtn" class="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-purple-500/50 text-purple-300 text-xs font-bold flex items-center gap-2 transition-all shadow-md active:scale-95">
+          <i data-lucide="file-heart" class="w-3.5 h-3.5 text-purple-400"></i> Clinical Patient Note
+        </button>
+      </div>
+
+      <!-- Interactive Sandbox Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- Left: Input Console -->
+        <div class="lg:col-span-5 flex flex-col glass-card-cyber rounded-2xl p-6 relative">
+          <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
             <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center gap-1.5">
-                <i data-lucide="gavel" class="w-4 h-4 text-emerald-600"></i> Judge Presets:
-              </span>
-              <div class="flex flex-wrap items-center gap-2">
-                <button id="sampleApiBtn" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95">
-                  <i data-lucide="key" class="w-3.5 h-3.5 text-red-500"></i> API Leak
-                </button>
-                <button id="sampleCustomerBtn" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95">
-                  <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-600"></i> Customer Data
-                </button>
-                <button id="sampleMedicalBtn" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95">
-                  <i data-lucide="file-heart" class="w-3.5 h-3.5 text-purple-500"></i> Medical Note
-                </button>
-              </div>
+              <i data-lucide="file-input" class="w-4 h-4 text-cyan-400"></i>
+              <h3 class="text-xs font-bold text-white tracking-wide uppercase font-mono">1. Raw Confidential Input</h3>
             </div>
-
-            <!-- Sensitivity Mode Buttons -->
-            <div class="flex items-center gap-2 bg-slate-50 p-1 rounded-xl border border-slate-200 text-xs">
-              <span class="text-slate-400 font-mono text-[11px] font-semibold pl-2">Sensitivity:</span>
-              <div class="flex bg-white p-0.5 rounded-lg border border-slate-200 text-[11px] font-mono">
-                <button class="sensitivity-btn active px-3 py-1 rounded-md text-emerald-700 font-bold bg-emerald-50 transition-all" data-mode="standard">Standard</button>
-                <button class="sensitivity-btn px-3 py-1 rounded-md text-slate-600 hover:text-slate-900 transition-all" data-mode="gdpr">Strict GDPR</button>
-                <button class="sensitivity-btn px-3 py-1 rounded-md text-slate-600 hover:text-slate-900 transition-all" data-mode="paranoid">Paranoid</button>
-              </div>
-            </div>
+            <span id="charCounter" class="text-[11px] text-slate-500 font-mono">0 chars</span>
           </div>
 
-          <!-- Interactive Active Workspace Grid (Input / Pipeline / Output) -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            
-            <!-- Left Workspace Panel: Input -->
-            <div class="lg:col-span-5 flex flex-col bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm relative">
-              <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-100">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="file-text" class="w-4 h-4 text-emerald-600"></i>
-                  <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Source Data Input</h4>
-                </div>
-                <span id="charCounter" class="text-[11px] text-slate-400 font-mono">0 characters</span>
-              </div>
+          <textarea id="rawTextInput" class="w-full flex-1 bg-black/60 border border-slate-800 rounded-xl p-4 text-slate-200 font-mono text-xs leading-relaxed focus:outline-none focus:border-cyan-500 transition-all resize-none min-h-[260px]" placeholder="Paste credentials, code, logs, Aadhaar, PAN, or health records here..." spellcheck="false"></textarea>
+        </div>
 
-              <!-- Input Tabs -->
-              <div class="flex bg-slate-100 p-1 rounded-xl mb-3 border border-slate-200">
-                <button id="tabTextBtn" class="flex-1 py-1.5 text-xs font-bold rounded-lg text-slate-900 bg-white shadow-sm flex items-center justify-center gap-1.5 transition-all">
-                  <i data-lucide="code-2" class="w-3.5 h-3.5 text-emerald-600"></i> Raw Text / Code
-                </button>
-                <button id="tabImageBtn" class="flex-1 py-1.5 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-900 flex items-center justify-center gap-1.5 transition-all">
-                  <i data-lucide="image" class="w-3.5 h-3.5 text-slate-500"></i> Image OCR
-                </button>
-              </div>
-
-              <!-- Raw Text Container -->
-              <div id="textInputContainer" class="flex-1 flex flex-col min-h-[220px]">
-                <textarea id="rawTextInput" class="w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-slate-800 font-mono text-xs leading-relaxed focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all resize-none placeholder:text-slate-400" placeholder="Paste code, logs, credentials, Aadhaar/PAN numbers, API keys, or text here (auto-scrubbed on paste)..." spellcheck="false"></textarea>
-              </div>
-
-              <!-- Image Canvas OCR Container -->
-              <div id="imageInputContainer" class="hidden flex-1 flex flex-col min-h-[220px]">
-                <div id="dropZone" class="flex-1 border-2 border-dashed border-slate-200 hover:border-emerald-500 rounded-xl bg-slate-50 flex flex-col items-center justify-center p-4 text-center cursor-pointer transition-all relative">
-                  <i data-lucide="image" class="w-8 h-8 text-slate-400 mb-2"></i>
-                  <p class="text-xs font-semibold text-slate-700">Drop screenshot or document</p>
-                  
-                  <div id="filePreviewContainer" class="hidden absolute inset-0 bg-white rounded-xl p-3 flex flex-col items-center justify-center z-10">
-                    <canvas id="redactionCanvas" class="max-h-44 max-w-full object-contain rounded-lg border border-slate-200 bg-slate-900 mb-2"></canvas>
-                    <img id="imagePreview" class="hidden" alt="Preview">
-                    <span id="fileNameDisplay" class="text-[11px] font-mono text-slate-600 truncate max-w-xs mb-2"></span>
-                    <div class="flex items-center gap-2">
-                      <button id="downloadRedactedImageBtn" class="px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-lg">Download Redacted</button>
-                      <button id="removeFileBtn" class="px-3 py-1 bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg">Remove</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Middle Pipeline Pipeline Controls -->
-            <div class="lg:col-span-2 flex flex-col items-center justify-center gap-2 py-2 my-auto">
-              <div id="pipelineStep1" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center text-[11px] font-mono font-bold text-red-600">
-                PASS 1: Fast Regex
-              </div>
-              <div class="w-0.5 h-6 bg-slate-200"></div>
-              <button id="scrubBtn" class="w-full py-3.5 px-3 rounded-xl bg-[#064e3b] hover:bg-[#047857] text-white font-black text-xs tracking-wider uppercase shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-                <i data-lucide="cpu" class="w-4 h-4"></i> SANITIZE
-              </button>
-              <div class="w-0.5 h-6 bg-slate-200"></div>
-              <div id="pipelineStep2" class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center text-[11px] font-mono font-bold text-emerald-600">
-                PASS 2: Gemma 2B
-              </div>
-            </div>
-
-            <!-- Right Workspace Panel: Output -->
-            <div class="lg:col-span-5 flex flex-col bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm relative">
-              <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-100">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-                  <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Sanitized Output</h4>
-                </div>
-
-                <!-- View Toggles -->
-                <div class="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[11px]">
-                  <button class="toggle-btn active px-2.5 py-1 rounded-md text-emerald-700 font-bold bg-white shadow-sm" data-view="final">AI Cleaned</button>
-                  <button class="toggle-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900" data-view="regex">Regex Only</button>
-                  <button id="extractedViewBtn" class="toggle-btn px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 hidden" data-view="extracted">OCR Text</button>
-                </div>
-              </div>
-
-              <!-- Output Container -->
-              <div class="flex-1 flex flex-col min-h-[220px] relative">
-                <!-- Loader -->
-                <div id="loader" class="hidden absolute inset-0 bg-white/90 backdrop-blur-sm rounded-xl z-20 flex flex-col items-center justify-center gap-2">
-                  <div class="w-8 h-8 border-3 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
-                  <p id="loaderText" class="text-xs font-mono text-emerald-700 animate-pulse">Sanitizing text...</p>
-                </div>
-
-                <!-- Empty State -->
-                <div id="emptyOutputState" class="flex-1 flex flex-col items-center justify-center text-center p-6 text-slate-400">
-                  <i data-lucide="lock" class="w-10 h-10 mb-2 text-slate-300"></i>
-                  <p class="text-xs font-medium text-slate-500">Sanitized text will appear here</p>
-                </div>
-
-                <!-- Active Output Box -->
-                <div id="outputTextContainer" class="hidden flex-1 bg-slate-900 text-slate-200 border border-slate-800 rounded-xl p-3.5 overflow-y-auto max-h-[260px]">
-                  <pre id="outputPre" class="text-xs font-mono leading-relaxed whitespace-pre-wrap break-words"><code></code></pre>
-                </div>
-              </div>
-
-              <!-- Actions Bar -->
-              <div id="auditCounterBar" class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2">
-                <span id="auditCounterBadge" class="text-[11px] font-mono text-slate-500 font-semibold">
-                  <span id="auditCounterText">0 Secrets Redacted</span>
-                </span>
-                <div class="flex items-center gap-2">
-                  <button id="copyBtn" disabled class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1 disabled:opacity-40">
-                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
-                  </button>
-                  <button id="downloadCleanBtn" disabled class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-semibold flex items-center gap-1 disabled:opacity-40">
-                    <i data-lucide="file-down" class="w-3.5 h-3.5"></i> Clean File
-                  </button>
-                  <button id="downloadAuditReportBtn" disabled class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1 disabled:opacity-40">
-                    <i data-lucide="scroll" class="w-3.5 h-3.5"></i> Audit Certificate
-                  </button>
-                </div>
-              </div>
-
-            </div>
-
+        <!-- Middle: Dual-Pass Processing Pipeline Beam -->
+        <div class="lg:col-span-2 flex flex-col items-center justify-center gap-3 py-4 my-auto">
+          <div id="pipelineStep1" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-800 text-center text-xs font-mono font-bold text-red-400 shadow-lg">
+            PASS 1: Fast Regex
           </div>
-
-          <!-- Bottom Grid: Privacy Score & Audit Trail -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <!-- Card 1: PRIVACY SCORE -->
-            <div class="lg:col-span-5 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between mb-4">
-                  <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">PRIVACY SCORE</span>
-                  <span class="text-sm font-extrabold text-[#10b981]">99.8%</span>
-                </div>
-
-                <!-- Sage Green Bar Chart -->
-                <div class="flex items-end gap-2.5 h-24 mb-4 pt-2">
-                  <div class="flex-1 bg-emerald-100 rounded-t-md h-12"></div>
-                  <div class="flex-1 bg-emerald-100 rounded-t-md h-16"></div>
-                  <div class="flex-1 bg-emerald-100 rounded-t-md h-10"></div>
-                  <div class="flex-1 bg-emerald-200 rounded-t-md h-20"></div>
-                  <div class="flex-1 bg-emerald-500 rounded-t-md h-14"></div>
-                  <div class="flex-1 bg-emerald-100 rounded-t-md h-18"></div>
-                  <div class="flex-1 bg-emerald-100 rounded-t-md h-8"></div>
-                </div>
-
-                <p class="text-xs text-slate-600 leading-relaxed mb-6 font-medium">
-                  Your local scrubber has neutralized <strong class="text-slate-900">1.2k</strong> unique identifiers this week.
-                </p>
-              </div>
-
-              <!-- Offline Mode Toggle Box -->
-              <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-4 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <i data-lucide="wifi-off" class="w-5 h-5 text-slate-600"></i>
-                  <span class="text-xs font-bold tracking-wider text-slate-900 font-mono">OFFLINE MODE</span>
-                </div>
-
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" id="offlineToggleSwitch" class="sr-only peer" checked>
-                  <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#10b981]"></div>
-                </label>
-              </div>
-            </div>
-
-            <!-- Card 2: AUDIT TRAIL -->
-            <div class="lg:col-span-7 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between mb-4">
-                  <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">AUDIT TRAIL</span>
-                  <button id="viewAllLogsLink" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors cursor-pointer">View All Logs</button>
-                </div>
-
-                <!-- Skeleton / Recent Audit List -->
-                <div class="space-y-3.5" id="dashboardAuditList">
-                  <!-- Entry 1 -->
-                  <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <div class="flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center text-slate-600">
-                        <i data-lucide="file-text" class="w-4 h-4"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-bold text-slate-800">financial_report_q3_final.pdf</p>
-                        <p class="text-[10px] font-mono text-slate-400">TEXT REDACTION &bull; 2023-10-24 14:02:11</p>
-                      </div>
-                    </div>
-                    <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold font-mono">90% SCORE</span>
-                  </div>
-
-                  <!-- Entry 2 -->
-                  <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <div class="flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center text-slate-600">
-                        <i data-lucide="image" class="w-4 h-4"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-bold text-slate-800">slack_screenshot_prod_issue.png</p>
-                        <p class="text-[10px] font-mono text-slate-400">SCREENSHOT MASK &bull; 2023-10-24 13:45:50</p>
-                      </div>
-                    </div>
-                    <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold font-mono">100% SCORE</span>
-                  </div>
-
-                  <!-- Entry 3 -->
-                  <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <div class="flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center text-slate-600">
-                        <i data-lucide="file-code" class="w-4 h-4"></i>
-                      </div>
-                      <div>
-                        <p class="text-xs font-bold text-slate-800">bash_history_export.log</p>
-                        <p class="text-[10px] font-mono text-slate-400">TEXT REDACTION &bull; 2023-10-24 09:12:04</p>
-                      </div>
-                    </div>
-                    <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold font-mono">76% SCORE</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Security Badges Footer inside card -->
-              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-400">
-                <span class="flex items-center gap-1.5"><i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-600"></i> AES-256 RAM ENCRYPTION</span>
-                <span class="flex items-center gap-1.5"><i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-600"></i> ZERO-TRUST ARCHITECTURE</span>
-                <span class="flex items-center gap-1.5"><i data-lucide="eye-off" class="w-3.5 h-3.5 text-emerald-600"></i> METADATA STRIPPING ACTIVE</span>
-              </div>
-            </div>
-
-          </div>
-
-        </section>
-
-        <!-- =================================================================== -->
-        <!-- VIEW 2: SCRUB HISTORY -->
-        <!-- =================================================================== -->
-        <section id="viewHistory" class="hidden space-y-6 flex-1 flex flex-col">
           
-          <!-- Archive Protocol Header Row -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase tracking-wider mb-1">
-                <i data-lucide="history" class="w-4 h-4"></i> ARCHIVE PROTOCOL
-              </div>
-              <h2 class="text-3xl font-extrabold text-slate-900">Scrub History</h2>
+          <div class="w-1 h-8 bg-gradient-to-b from-red-500 to-emerald-500 rounded-full animate-pulse"></div>
+
+          <button id="scrubBtn" class="btn-emerald-glow w-full py-4 px-3 rounded-2xl text-xs font-black tracking-wider uppercase shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <i data-lucide="cpu" class="w-4 h-4"></i> SANITIZE VIA LOCAL GEMMA
+          </button>
+
+          <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-cyan-500 rounded-full animate-pulse"></div>
+
+          <div id="pipelineStep2" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-800 text-center text-xs font-mono font-bold text-cyan-400 shadow-lg">
+            PASS 2: Gemma 2B Scan
+          </div>
+        </div>
+
+        <!-- Right: Sanitized Output Console -->
+        <div class="lg:col-span-5 flex flex-col glass-card-cyber rounded-2xl p-6 relative">
+          <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+              <h3 class="text-xs font-bold text-white tracking-wide uppercase font-mono">2. Clean Redacted Output</h3>
             </div>
 
-            <!-- Top Stats Cards -->
-            <div class="flex items-center gap-4">
-              <div class="bg-slate-100 border border-slate-200/80 rounded-2xl px-6 py-3 text-right">
-                <p class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">TOTAL SCRUBBED</p>
-                <p class="text-2xl font-extrabold text-emerald-600 leading-tight">1,284</p>
-              </div>
-
-              <div class="bg-slate-100 border border-slate-200/80 rounded-2xl px-6 py-3 text-right">
-                <p class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">THREATS NEUTRALIZED</p>
-                <p class="text-2xl font-extrabold text-slate-900 leading-tight">42,091</p>
-              </div>
+            <div class="flex bg-slate-900 p-0.5 rounded-lg border border-slate-800 text-[11px] font-mono">
+              <button class="toggle-btn active px-3 py-1 rounded-md text-cyan-300 font-bold bg-slate-800" data-view="final">AI Cleaned</button>
+              <button class="toggle-btn px-3 py-1 rounded-md text-slate-400 hover:text-slate-200" data-view="regex">Regex Only</button>
             </div>
           </div>
 
-          <!-- Toolbar: Search & Action Buttons -->
-          <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="relative w-full sm:w-80">
-              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-3.5"></i>
-              <input type="text" id="historySearchInput" placeholder="Search logs by filename..." class="w-full bg-slate-100 border border-slate-200 rounded-full pl-10 pr-4 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
+          <div class="flex-1 flex flex-col min-h-[260px] relative">
+            <div id="loader" class="hidden absolute inset-0 bg-[#030712]/95 backdrop-blur-md rounded-xl z-20 flex flex-col items-center justify-center gap-3">
+              <div class="w-10 h-10 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
+              <p id="loaderText" class="text-xs font-mono text-cyan-300 animate-pulse">Running Gemma 2B Local Scan...</p>
             </div>
 
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-              <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors">
-                <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i> Filter
+            <div id="emptyOutputState" class="flex-1 flex flex-col items-center justify-center text-center p-6 text-slate-500">
+              <i data-lucide="lock" class="w-12 h-12 mb-3 text-slate-700"></i>
+              <p class="text-xs font-semibold text-slate-400">Sanitized output will appear here with color-coded redaction badges</p>
+            </div>
+
+            <div id="outputTextContainer" class="hidden flex-1 bg-black/70 border border-slate-800 rounded-xl p-4 overflow-y-auto max-h-[280px]">
+              <pre id="outputPre" class="text-xs font-mono leading-relaxed text-slate-200 whitespace-pre-wrap break-words"><code></code></pre>
+            </div>
+          </div>
+
+          <!-- Actions Bar -->
+          <div id="auditCounterBar" class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs font-mono">
+            <span id="auditCounterBadge" class="text-cyan-300 font-bold">
+              <span id="auditCounterText">0 Secrets Redacted</span>
+            </span>
+            <div class="flex items-center gap-2">
+              <button id="copyBtn" disabled class="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-semibold disabled:opacity-40">
+                <i data-lucide="copy" class="w-3.5 h-3.5 inline mr-1"></i> Copy
               </button>
-              <button id="exportHistoryLogsBtn" class="bg-[#064e3b] hover:bg-[#047857] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-md transition-all active:scale-95">
-                Export Logs
-              </button>
-            </div>
-          </div>
-
-          <!-- History Data Table Card -->
-          <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm flex-1 flex flex-col justify-between">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse">
-                <thead>
-                  <tr class="bg-slate-100/70 border-b border-slate-200 text-[11px] font-mono font-bold text-slate-500 uppercase tracking-wider">
-                    <th class="px-6 py-4">FILENAME</th>
-                    <th class="px-6 py-4">SANITIZATION TYPE</th>
-                    <th class="px-6 py-4">TIMESTAMP</th>
-                    <th class="px-6 py-4 text-center">SECURITY SCORE</th>
-                    <th class="px-6 py-4 text-right">ACTIONS</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-xs font-medium text-slate-700" id="historyTableBody">
-                  <!-- Row 1 -->
-                  <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="px-6 py-4 flex items-center gap-3 font-semibold text-slate-900">
-                      <i data-lucide="file-text" class="w-4 h-4 text-slate-500"></i>
-                      <span>financial_report_q3_final.pdf</span>
-                    </td>
-                    <td class="px-6 py-4">
-                      <span class="px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold font-mono">TEXT REDACTION</span>
-                    </td>
-                    <td class="px-6 py-4 font-mono text-slate-500">2023-10-24 14:02:11</td>
-                    <td class="px-6 py-4 text-center">
-                      <span class="inline-flex items-center justify-center w-9 h-9 rounded-full border-2 border-emerald-500 text-emerald-700 font-bold font-mono text-[11px]">90%</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <button class="text-slate-400 hover:text-slate-700"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
-                    </td>
-                  </tr>
-
-                  <!-- Row 2 -->
-                  <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="px-6 py-4 flex items-center gap-3 font-semibold text-slate-900">
-                      <i data-lucide="image" class="w-4 h-4 text-slate-500"></i>
-                      <span>slack_screenshot_prod_issue.png</span>
-                    </td>
-                    <td class="px-6 py-4">
-                      <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-bold font-mono">SCREENSHOT MASK</span>
-                    </td>
-                    <td class="px-6 py-4 font-mono text-slate-500">2023-10-24 13:45:50</td>
-                    <td class="px-6 py-4 text-center">
-                      <span class="inline-flex items-center justify-center w-9 h-9 rounded-full border-2 border-emerald-500 text-emerald-700 font-bold font-mono text-[11px]">100%</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <button class="text-slate-400 hover:text-slate-700"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
-                    </td>
-                  </tr>
-
-                  <!-- Row 3 -->
-                  <tr class="hover:bg-slate-50/80 transition-colors">
-                    <td class="px-6 py-4 flex items-center gap-3 font-semibold text-slate-900">
-                      <i data-lucide="file-code" class="w-4 h-4 text-slate-500"></i>
-                      <span>bash_history_export.log</span>
-                    </td>
-                    <td class="px-6 py-4">
-                      <span class="px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold font-mono">TEXT REDACTION</span>
-                    </td>
-                    <td class="px-6 py-4 font-mono text-slate-500">2023-10-24 09:12:04</td>
-                    <td class="px-6 py-4 text-center">
-                      <span class="inline-flex items-center justify-center w-9 h-9 rounded-full border-2 border-emerald-500 text-emerald-700 font-bold font-mono text-[11px]">76%</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <button class="text-slate-400 hover:text-slate-700"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Table Pagination Footer -->
-            <div class="px-6 py-4 bg-slate-50/60 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-slate-500">
-              <p>SHOWING 1-10 OF 1,284 LOGS</p>
-              <div class="flex items-center gap-1.5 font-bold">
-                <button class="px-2.5 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-700">&lt;</button>
-                <button class="px-3 py-1 rounded bg-[#064e3b] text-white">1</button>
-                <button class="px-3 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700">2</button>
-                <button class="px-3 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700">3</button>
-                <span class="px-1 text-slate-400">...</span>
-                <button class="px-3 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700">129</button>
-                <button class="px-2.5 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-700">&gt;</button>
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-        <!-- =================================================================== -->
-        <!-- VIEW 3: SECURITY LOGS -->
-        <!-- =================================================================== -->
-        <section id="viewLogs" class="hidden space-y-6 flex-1 flex flex-col">
-          
-          <!-- System Surveillance Header Row -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase tracking-wider mb-1">
-                <i data-lucide="shield" class="w-4 h-4"></i> SYSTEM SURVEILLANCE
-              </div>
-              <h2 class="text-3xl font-extrabold text-slate-900">Security Logs</h2>
-            </div>
-
-            <!-- Top Stats & Export Button -->
-            <div class="flex items-center gap-4">
-              <div class="bg-slate-100 border border-slate-200/80 rounded-2xl px-5 py-2 text-right font-mono">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">UPTIME</p>
-                <p class="text-base font-bold text-emerald-600" id="uptimeDisplay">00:03:23:54</p>
-              </div>
-
-              <div class="bg-slate-100 border border-slate-200/80 rounded-2xl px-5 py-2 text-right font-mono">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">THREATS BLOCKED</p>
-                <p class="text-base font-bold text-slate-900">1,284</p>
-              </div>
-
-              <button id="exportAuditTrailLogsBtn" class="bg-[#064e3b] hover:bg-[#047857] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-md transition-all active:scale-95 flex items-center gap-2">
-                <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Audit Trail
+              <button id="downloadCleanBtn" disabled class="px-3.5 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-semibold disabled:opacity-40">
+                <i data-lucide="download" class="w-3.5 h-3.5 inline mr-1"></i> Download Clean
               </button>
             </div>
           </div>
-
-          <!-- Main Grid (Filters & Neural Activity Left, Live Terminal Right) -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch flex-1">
-            
-            <!-- Left Side: Log Filters & Neural Activity -->
-            <div class="lg:col-span-4 space-y-6 flex flex-col justify-between">
-              
-              <!-- Log Filters Card -->
-              <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm">
-                <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono mb-4">Log Filters</h3>
-                <div class="space-y-2.5">
-                  <label class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
-                    <span class="text-xs font-semibold text-slate-700">Local Engine</span>
-                    <input type="checkbox" checked class="w-4 h-4 accent-emerald-600 rounded">
-                  </label>
-                  <label class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
-                    <span class="text-xs font-semibold text-slate-700">WebGPU Status</span>
-                    <input type="checkbox" checked class="w-4 h-4 accent-emerald-600 rounded">
-                  </label>
-                  <label class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
-                    <span class="text-xs font-semibold text-slate-700">Redaction Events</span>
-                    <input type="checkbox" checked class="w-4 h-4 accent-emerald-600 rounded">
-                  </label>
-                  <label class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
-                    <span class="text-xs font-semibold text-slate-700">Critical Alerts</span>
-                    <input type="checkbox" checked class="w-4 h-4 accent-emerald-600 rounded">
-                  </label>
-                </div>
-              </div>
-
-              <!-- Neural Activity Card -->
-              <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-2xl p-5 shadow-sm flex-1 flex flex-col justify-between">
-                <div>
-                  <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-700 uppercase tracking-wider mb-2">
-                    <i data-lucide="activity" class="w-4 h-4"></i> NEURAL ACTIVITY
-                  </div>
-                  <p class="text-xs text-slate-700 font-medium leading-relaxed">
-                    Gemma 2B is currently monitoring 14 active buffers.
-                  </p>
-                </div>
-
-                <!-- Green bar graph -->
-                <div class="flex items-end gap-2 h-16 pt-4">
-                  <div class="flex-1 bg-emerald-200 rounded-t h-8"></div>
-                  <div class="flex-1 bg-emerald-300 rounded-t h-12"></div>
-                  <div class="flex-1 bg-emerald-200 rounded-t h-6"></div>
-                  <div class="flex-1 bg-emerald-500 rounded-t h-16"></div>
-                  <div class="flex-1 bg-emerald-300 rounded-t h-10"></div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Right Side: Live Terminal Window -->
-            <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
-              
-              <!-- Terminal Header Bar -->
-              <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
-                <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
-                  <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
-                  <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
-                  <span class="ml-2 text-slate-300 font-bold">root@stealthscrub:~/logs/live_stream</span>
-                </div>
-
-                <div class="flex items-center gap-2 text-[10px]">
-                  <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400">UTF-8</span>
-                  <span class="px-2 py-0.5 rounded bg-slate-800 text-emerald-400 font-bold">LOCAL_ONLY</span>
-                </div>
-              </div>
-
-              <!-- Terminal Stream Text Output Box -->
-              <div id="securityLogTerminal" class="p-4 font-mono text-xs text-slate-300 space-y-1.5 h-80 overflow-y-auto leading-relaxed select-text">
-                <p><span class="text-slate-500">10:48:41</span> <span class="text-emerald-400">[LOCAL]</span> Redaction scan started: document_scan_v4.pdf</p>
-                <p><span class="text-slate-500">10:48:44</span> <span class="text-emerald-400">[LOCAL]</span> System health: Nominal.</p>
-                <p><span class="text-slate-500">10:48:48</span> <span class="text-emerald-400">[LOCAL]</span> Applied Gaussian blur to sensitive regions.</p>
-                <p><span class="text-slate-500">10:48:50</span> <span class="text-emerald-400">[LOCAL]</span> System health: Nominal.</p>
-                <p><span class="text-slate-500">10:48:54</span> <span class="text-emerald-400">[LOCAL]</span> PII Detected: Email Address (94% confidence)</p>
-                <p><span class="text-slate-500">10:48:57</span> <span class="text-emerald-400">[LOCAL]</span> Hash generated for audit trail: 8f2d...4a12</p>
-                <p><span class="text-slate-500">10:49:00</span> <span class="text-emerald-400">[LOCAL]</span> WebGPU cache flushed.</p>
-                <p><span class="text-slate-500">10:49:03</span> <span class="text-emerald-400">[LOCAL]</span> System health: Nominal.</p>
-                <p><span class="text-slate-500">10:49:14</span> <span class="text-emerald-400">[LOCAL]</span> Memory check: 1.2GB utilization - STABLE</p>
-              </div>
-
-              <!-- Diagnostic Command Input Footer Bar -->
-              <div class="bg-slate-950 p-3 border-t border-slate-800 flex items-center justify-between gap-3 text-xs font-mono">
-                <div class="flex items-center gap-2 flex-1">
-                  <span class="text-emerald-400 font-bold">&gt;</span>
-                  <input type="text" id="terminalInput" placeholder="Enter diagnostic command..." class="w-full bg-transparent border-none focus:outline-none text-slate-200 placeholder-slate-600">
-                </div>
-
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span>LIVE STREAM</span>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- Bottom 4 Statistics Cards -->
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            <!-- Card 1 -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <i data-lucide="cpu" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <p class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">VRAM USAGE</p>
-                <p class="text-sm font-extrabold text-slate-900">1.2 / 8.0 GB</p>
-              </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <i data-lucide="zap" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <p class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">TOKENS / SEC</p>
-                <p class="text-sm font-extrabold text-slate-900">42.5 t/s</p>
-              </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <i data-lucide="shield-check" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <p class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">LEAK PREVENTION</p>
-                <p class="text-sm font-extrabold text-slate-900">100% Client</p>
-              </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <i data-lucide="database" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <p class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">LOCAL STORAGE</p>
-                <p class="text-sm font-extrabold text-slate-900">144 MB</p>
-              </div>
-            </div>
-
-          </div>
-
-        </section>
-
-        <!-- =================================================================== -->
-        <!-- VIEW 4: SETTINGS -->
-        <!-- =================================================================== -->
-        <section id="viewSettings" class="hidden space-y-6 flex-1 flex flex-col">
-          <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-emerald-600 uppercase tracking-wider">
-            <i data-lucide="settings" class="w-4 h-4"></i> NODE CONFIGURATION
-          </div>
-          <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Settings</h2>
-
-          <div class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-6 max-w-3xl">
-            <div>
-              <h3 class="text-sm font-bold text-slate-900 mb-1">Local Inference Engine</h3>
-              <p class="text-xs text-slate-500 mb-3">Configure local Ollama host endpoint and target LLM model.</p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label class="text-[11px] font-mono font-bold text-slate-500 uppercase block mb-1">Ollama Host</label>
-                  <input type="text" value="http://localhost:11434" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-mono text-slate-800">
-                </div>
-                <div>
-                  <label class="text-[11px] font-mono font-bold text-slate-500 uppercase block mb-1">Target Model</label>
-                  <input type="text" value="gemma2:2b" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-mono text-slate-800">
-                </div>
-              </div>
-            </div>
-
-            <hr class="border-slate-100">
-
-            <div>
-              <h3 class="text-sm font-bold text-slate-900 mb-1">Privacy & Security Controls</h3>
-              <p class="text-xs text-slate-500 mb-3">Enforce strict zero-cloud air-gap policies.</p>
-              <div class="space-y-3">
-                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
-                  <div>
-                    <p class="text-xs font-bold text-slate-800">Lock Network Egress</p>
-                    <p class="text-[11px] text-slate-400">Blocks all non-loopback HTTP requests automatically.</p>
-                  </div>
-                  <input type="checkbox" checked class="w-4 h-4 accent-emerald-600 rounded">
-                </label>
-                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
-                  <div>
-                    <p class="text-xs font-bold text-slate-800">Auto-Purge RAM Cache</p>
-                    <p class="text-[11px] text-slate-400">Clears document buffers after download.</p>
-                  </div>
-                  <input type="checkbox" checked class="w-4 h-4 accent-emerald-600 rounded">
-                </label>
-              </div>
-            </div>
-
-            <hr class="border-slate-100">
-
-            <div class="flex items-center justify-between pt-2">
-              <button id="saveSettingsBtn" class="bg-[#064e3b] hover:bg-[#047857] text-white px-6 py-2.5 rounded-full text-xs font-bold shadow-md transition-all active:scale-95">
-                Save Settings
-              </button>
-              <button id="clearStorageBtn" class="text-red-600 hover:text-red-700 text-xs font-semibold">
-                Clear Local Audit History
-              </button>
-            </div>
-          </div>
-        </section>
+        </div>
 
       </div>
 
-      <!-- 3. FOOTER STATUS TICKER BAR -->
-      <footer class="bg-white border-t border-slate-200/80 px-8 py-3.5 text-xs text-slate-500 font-mono flex flex-wrap items-center justify-between gap-4 mt-auto">
-        <div class="flex items-center gap-4">
-          <span class="flex items-center gap-1.5"><i data-lucide="cpu" class="w-3.5 h-3.5 text-slate-400"></i> WEBGPU: <strong class="text-slate-700">ENABLED</strong></span>
-          <span class="flex items-center gap-1.5"><i data-lucide="brain" class="w-3.5 h-3.5 text-slate-400"></i> LOCAL MODEL: <strong class="text-slate-700" id="tickerMode">GEMMA 2B</strong></span>
-          <span class="flex items-center gap-1.5 text-emerald-600 font-bold"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> PRIVACY: 100% CLIENT-SIDE</span>
+    </div>
+  </section>
+
+  <!-- 4. 3D ARCHITECTURE VAULT SECTION ("How Zero-Cloud Works") -->
+  <section id="architectureSection" class="py-20 px-6 max-w-7xl mx-auto w-full space-y-12">
+    <div class="text-center max-w-3xl mx-auto space-y-3">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/50 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold">
+        <i data-lucide="cpu" class="w-4 h-4 text-emerald-400"></i>
+        <span>ZERO-TRUST BROWSER ARCHITECTURE</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+        Three Layers of Hardware-Accelerated Defense
+      </h2>
+      <p class="text-slate-400 text-sm">
+        Every byte stays inside volatile RAM. No server calls, no telemetry, no disk persistence.
+      </p>
+    </div>
+
+    <!-- 3D Layer Stack Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Layer 1 -->
+      <div class="glass-card-cyber rounded-3xl p-8 space-y-4 relative group">
+        <div class="w-12 h-12 rounded-2xl bg-red-950/60 border border-red-500/40 text-red-400 flex items-center justify-center">
+          <i data-lucide="zap" class="w-6 h-6"></i>
         </div>
-        <span class="text-[11px] text-slate-400">v4.2.0-STABLE</span>
-      </footer>
+        <span class="text-xs font-mono font-bold text-red-400 uppercase tracking-widest block">LAYER 1 &bull; FAST REGEX</span>
+        <h3 class="text-xl font-bold text-white leading-snug">Sub-10ms Structural Pattern Matching</h3>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          High-speed regex engine catches AWS keys, Stripe tokens, GitHub PATs, JWTs, credit cards, Aadhaar, and passwords before AI inference starts.
+        </p>
+      </div>
 
-    </main>
+      <!-- Layer 2 -->
+      <div class="glass-card-cyber rounded-3xl p-8 space-y-4 relative group border-emerald-500/30 shadow-emerald-500/10">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
+          <i data-lucide="cpu" class="w-6 h-6"></i>
+        </div>
+        <span class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-widest block">LAYER 2 &bull; WEBGPU PIPELINE</span>
+        <h3 class="text-xl font-bold text-white leading-snug">Hardware-Accelerated Browser Shaders</h3>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Direct WebGPU tensor execution leverages Apple Silicon M-series unified memory and Nvidia GPUs for 60+ tokens/sec on-device execution.
+        </p>
+      </div>
 
-  </div>
+      <!-- Layer 3 -->
+      <div class="glass-card-cyber rounded-3xl p-8 space-y-4 relative group">
+        <div class="w-12 h-12 rounded-2xl bg-cyan-950/60 border border-cyan-500/40 text-cyan-400 flex items-center justify-center">
+          <i data-lucide="brain" class="w-6 h-6"></i>
+        </div>
+        <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest block">LAYER 3 &bull; GEMMA 2B SCAN</span>
+        <h3 class="text-xl font-bold text-white leading-snug">Contextual Semantic AI Intelligence</h3>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Gemma 2B LLM redacts unformatted names, clinical notes, addresses, internal hostnames, and project codenames that pattern regex misses.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5. BENCHMARK COMPARISON CALCULATOR SECTION -->
+  <section id="benchmarkSection" class="py-16 px-6 bg-slate-950/80 border-t border-slate-900">
+    <div class="max-w-7xl mx-auto space-y-10">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-950/50 border border-purple-500/30 text-purple-300 text-xs font-mono font-bold">
+          <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-400"></i>
+          <span>TELEMETRY & SPEED BENCHMARKS</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
+          Cloud LLM API vs. StealthScrub On-Device AI
+        </h2>
+      </div>
+
+      <!-- Comparison Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        
+        <!-- Cloud LLM -->
+        <div class="glass-card-cyber rounded-3xl p-8 border-red-500/30 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 class="text-lg font-bold text-red-400 flex items-center gap-2">
+              <i data-lucide="cloud-off" class="w-5 h-5"></i> Cloud Redaction APIs
+            </h3>
+            <span class="text-[10px] font-mono bg-red-950/60 border border-red-500/30 text-red-300 px-2.5 py-1 rounded">⚠️ Cloud Egress Risk</span>
+          </div>
+          <div class="space-y-3 font-mono text-xs">
+            <div class="flex justify-between text-slate-400">
+              <span>Latency:</span>
+              <strong class="text-red-400">~1400 ms / scan</strong>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Cost:</span>
+              <strong class="text-red-400">$0.003 / request</strong>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Data Security:</span>
+              <strong class="text-red-400">Leaves Device</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- StealthScrub Local Engine -->
+        <div class="glass-card-cyber rounded-3xl p-8 border-emerald-500/50 space-y-4 shadow-emerald-500/10">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-5 h-5"></i> StealthScrub AI
+            </h3>
+            <span class="text-[10px] font-mono bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 px-2.5 py-1 rounded font-bold">🟢 100% On-Device</span>
+          </div>
+          <div class="space-y-3 font-mono text-xs">
+            <div class="flex justify-between text-slate-400">
+              <span>Latency:</span>
+              <strong class="text-emerald-400">&lt; 85 ms / scan</strong>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Cost:</span>
+              <strong class="text-emerald-400">$0.00 / request</strong>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Data Security:</span>
+              <strong class="text-emerald-400">0 KB Air-Gapped</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. SECURITY LOGS TERMINAL STREAM SECTION -->
+  <section id="logsSection" class="py-16 px-6 max-w-7xl mx-auto w-full space-y-8">
+    <div class="text-center max-w-3xl mx-auto space-y-3">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/50 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
+        <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i>
+        <span>REAL-TIME AUDIT STREAM</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
+        Live Security Surveillance Console
+      </h2>
+    </div>
+
+    <!-- Live Terminal Box -->
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl max-w-4xl mx-auto font-mono text-xs">
+      <div class="bg-slate-950 px-5 py-3 border-b border-slate-800 flex items-center justify-between text-slate-400">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+          <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+          <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+          <span class="ml-2 text-slate-200 font-bold">root@stealthscrub:~/logs/live_stream</span>
+        </div>
+        <span class="text-[10px] text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">LOCAL_ONLY</span>
+      </div>
+
+      <div id="securityLogTerminal" class="p-5 text-slate-300 space-y-2 h-72 overflow-y-auto leading-relaxed select-text bg-[#05070a]">
+        <p><span class="text-slate-500">10:48:41</span> <span class="text-emerald-400">[LOCAL]</span> Redaction scan started: document_scan_v4.pdf</p>
+        <p><span class="text-slate-500">10:48:44</span> <span class="text-emerald-400">[LOCAL]</span> System health: Nominal.</p>
+        <p><span class="text-slate-500">10:48:48</span> <span class="text-emerald-400">[LOCAL]</span> Applied Gaussian blur to sensitive regions.</p>
+        <p><span class="text-slate-500">10:48:54</span> <span class="text-emerald-400">[LOCAL]</span> PII Detected: Email Address (94% confidence)</p>
+        <p><span class="text-slate-500">10:48:57</span> <span class="text-emerald-400">[LOCAL]</span> Hash generated for audit trail: 8f2d...4a12</p>
+      </div>
+
+      <div class="bg-slate-950 p-3.5 border-t border-slate-800 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-1">
+          <span class="text-emerald-400 font-bold">&gt;</span>
+          <input type="text" id="terminalInput" placeholder="Type command (e.g. status, benchmark, purge)..." class="w-full bg-transparent border-none focus:outline-none text-slate-200 placeholder-slate-600">
+        </div>
+        <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> LIVE STREAM
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FOOTER & LAUNCH BANNER -->
+  <footer class="mt-auto border-t border-slate-900 bg-slate-950/90 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-500 font-mono">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
+          <i data-lucide="shield" class="w-4 h-4"></i>
+        </div>
+        <p>StealthScrub AI &bull; 100% Offline Zero-Cloud Privacy Vault</p>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/realrichelle19/StealthScrubAI.git" target="_blank" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <i data-lucide="github" class="w-4 h-4"></i> GitHub Repository
+        </a>
+        <span>Node.js + WebGPU + Gemma 2B</span>
+        <span class="text-slate-400 font-bold">v4.2.0-STABLE</span>
+      </div>
+    </div>
+  </footer>
 
   <!-- Toast Notification Container -->
   <div id="toastContainer"></div>
 
+  <!-- Main JavaScript App & 3D WebGL Vault Script -->
   <script src="app.js"></script>
 </body>
 
