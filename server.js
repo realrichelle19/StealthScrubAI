@@ -351,6 +351,28 @@ app.post('/api/scrub', upload.single('image'), async (req, res) => {
   }
 });
 
+// Fast endpoint for live screen intercept (No Gemma, just Tesseract + Regex)
+app.post('/api/scrub-fast', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image provided.' });
+    }
+    
+    const { text, ocrWords } = await extractTextFromImageBuffer(req.file.buffer);
+    const { redactedText, counts } = applyRegexRedactions(text);
+    
+    return res.json({
+      success: true,
+      extractedText: text,
+      ocrWords,
+      regexRedacted: redactedText,
+      stats: { regexCounts: counts }
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Health check endpoint
 app.get('/api/health', async (req, res) => {
   let ollamaConnected = false;

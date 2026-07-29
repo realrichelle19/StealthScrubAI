@@ -266,8 +266,27 @@ function initDashboardEngine() {
 
   const tabTextBtn = document.getElementById('tabTextBtn');
   const tabImageBtn = document.getElementById('tabImageBtn');
+  const tabVideoBtn = document.getElementById('tabVideoBtn');
+  const tabVoiceBtn = document.getElementById('tabVoiceBtn');
+  
   const textInputContainer = document.getElementById('textInputContainer');
   const imageInputContainer = document.getElementById('imageInputContainer');
+  const videoInputContainer = document.getElementById('videoInputContainer');
+  const voiceInputContainer = document.getElementById('voiceInputContainer');
+
+  const startScreenShareBtn = document.getElementById('startScreenShareBtn');
+  const stopScreenShareBtn = document.getElementById('stopScreenShareBtn');
+  const liveVideoFeed = document.getElementById('liveVideoFeed');
+  const liveRedactionCanvas = document.getElementById('liveRedactionCanvas');
+  const videoStreamWrapper = document.getElementById('videoStreamWrapper');
+  const videoPlaceholder = document.getElementById('videoPlaceholder');
+  const videoStatusText = document.getElementById('videoStatusText');
+
+  const micBtn = document.getElementById('micBtn');
+  const micIcon = document.getElementById('micIcon');
+  const voiceStatusTitle = document.getElementById('voiceStatusTitle');
+  const voiceTranscriptText = document.getElementById('voiceTranscriptText');
+  const voiceRecordingBorder = document.getElementById('voiceRecordingBorder');
 
   const dropZone = document.getElementById('dropZone');
   const selectFilesBtn = document.getElementById('selectFilesBtn');
@@ -435,26 +454,44 @@ Internal Hospital Host: med-records.internal.local (10.0.4.15)`
     });
   }
 
-  // 5. Left Input Tab Switching (Text vs Image OCR)
-  if (tabTextBtn && tabImageBtn) {
+  // 5. Left Input Tab Switching (Text vs Image vs Video vs Voice)
+  if (tabTextBtn && tabImageBtn && tabVideoBtn && tabVoiceBtn) {
+    function resetTabs() {
+      [tabTextBtn, tabImageBtn, tabVideoBtn, tabVoiceBtn].forEach(btn => {
+        btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+        btn.classList.add('text-slate-500');
+      });
+      [textInputContainer, imageInputContainer, videoInputContainer, voiceInputContainer].forEach(container => {
+        if (container) container.classList.add('hidden');
+      });
+    }
+
     tabTextBtn.addEventListener('click', () => {
+      resetTabs();
       tabTextBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
       tabTextBtn.classList.remove('text-slate-500');
-      tabImageBtn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
-      tabImageBtn.classList.add('text-slate-500');
-
       if (textInputContainer) textInputContainer.classList.remove('hidden');
-      if (imageInputContainer) imageInputContainer.classList.add('hidden');
     });
 
     tabImageBtn.addEventListener('click', () => {
+      resetTabs();
       tabImageBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
       tabImageBtn.classList.remove('text-slate-500');
-      tabTextBtn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
-      tabTextBtn.classList.add('text-slate-500');
-
       if (imageInputContainer) imageInputContainer.classList.remove('hidden');
-      if (textInputContainer) textInputContainer.classList.add('hidden');
+    });
+
+    tabVideoBtn.addEventListener('click', () => {
+      resetTabs();
+      tabVideoBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+      tabVideoBtn.classList.remove('text-slate-500');
+      if (videoInputContainer) videoInputContainer.classList.remove('hidden');
+    });
+
+    tabVoiceBtn.addEventListener('click', () => {
+      resetTabs();
+      tabVoiceBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+      tabVoiceBtn.classList.remove('text-slate-500');
+      if (voiceInputContainer) voiceInputContainer.classList.remove('hidden');
     });
   }
 
@@ -639,6 +676,293 @@ Internal Hospital Host: med-records.internal.local (10.0.4.15)`
       link.click();
       showToast('📥 Redacted Canvas Image Downloaded');
     });
+  }
+
+  // 6b. Live Screen Capture & Redaction Engine
+  let screenStream = null;
+  let ocrLoopInterval = null;
+  let isOcrProcessing = false;
+
+  if (startScreenShareBtn) {
+    startScreenShareBtn.addEventListener('click', async () => {
+      try {
+        screenStream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 15 } });
+        liveVideoFeed.srcObject = screenStream;
+        
+        videoPlaceholder.classList.add('hidden');
+        videoStreamWrapper.classList.remove('hidden');
+        
+        liveVideoFeed.addEventListener('loadedmetadata', () => {
+          liveVideoFeed.play();
+          liveRedactionCanvas.width = liveVideoFeed.videoWidth;
+          liveRedactionCanvas.height = liveVideoFeed.videoHeight;
+          startLiveRedactionLoop();
+        });
+
+        screenStream.getVideoTracks()[0].addEventListener('ended', stopScreenShare);
+        showToast('📡 Zero-Trust Screen Share Active');
+      } catch (err) {
+        showToast('❌ Screen share permission denied or failed', 'error');
+      }
+    });
+  }
+
+  if (stopScreenShareBtn) {
+    stopScreenShareBtn.addEventListener('click', stopScreenShare);
+  }
+
+  function stopScreenShare() {
+    if (screenStream) {
+      screenStream.getTracks().forEach(track => track.stop());
+      screenStream = null;
+    }
+    if (ocrLoopInterval) {
+      clearInterval(ocrLoopInterval);
+      ocrLoopInterval = null;
+    }
+    videoPlaceholder.classList.remove('hidden');
+    videoStreamWrapper.classList.add('hidden');
+    const ctx = liveRedactionCanvas.getContext('2d');
+    ctx.clearRect(0, 0, liveRedactionCanvas.width, liveRedactionCanvas.height);
+    showToast('⏹️ Screen Share Intercept Stopped');
+  }
+
+  function startLiveRedactionLoop() {
+    const captureCanvas = document.createElement('canvas');
+    captureCanvas.width = liveVideoFeed.videoWidth;
+    captureCanvas.height = liveVideoFeed.videoHeight;
+    const captureCtx = captureCanvas.getContext('2d');
+
+    // Run OCR every 1.5 seconds to balance performance
+    ocrLoopInterval = setInterval(async () => {
+      if (isOcrProcessing || !screenStream) return;
+      isOcrProcessing = true;
+
+      captureCtx.drawImage(liveVideoFeed, 0, 0, captureCanvas.width, captureCanvas.height);
+      
+      captureCanvas.toBlob(async (blob) => {
+        if (!blob) {
+          isOcrProcessing = false;
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', blob, 'frame.png');
+        
+        try {
+          // Use the fast endpoint
+          const res = await fetch('/api/scrub-fast', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            renderLiveRedactions(data.ocrWords || []);
+            
+            // Update counts in dashboard if there are any
+            const counts = data.stats?.regexCounts || {};
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+            if (total > 0 && auditCounterText) {
+              auditCounterText.textContent = `Intercepted ${total} Secrets Live in Frame • 0 Egress`;
+            }
+          }
+        } catch (e) {
+          console.error("Live OCR Error:", e);
+        }
+        
+        isOcrProcessing = false;
+      }, 'image/jpeg', 0.6); // Compress slightly for speed
+    }, 1500);
+  }
+
+  function renderLiveRedactions(ocrWords) {
+    const ctx = liveRedactionCanvas.getContext('2d');
+    ctx.clearRect(0, 0, liveRedactionCanvas.width, liveRedactionCanvas.height);
+
+    ocrWords.forEach(word => {
+      const wText = word.text || '';
+      // Regex check for API keys, passwords, PAN, AADHAAR, internal IPs, etc
+      const isSensitive = /key|sk_|pk_|AKIA|pass|token|secret|@|\d{10,}|[A-Z]{5}\d{4}[A-Z]|10\.\d|192\.168/i.test(wText);
+
+      if (isSensitive && word.bbox) {
+        const { x0, y0, x1, y1 } = word.bbox;
+        const width = x1 - x0;
+        const height = y1 - y0;
+
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(x0 - 2, y0 - 2, width + 4, height + 4);
+
+        ctx.strokeStyle = '#ef4444'; // Red for live intercept
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x0 - 2, y0 - 2, width + 4, height + 4);
+
+        ctx.fillStyle = '#ef4444';
+        ctx.font = `bold ${Math.max(12, Math.floor(height * 0.7))}px 'JetBrains Mono', monospace`;
+        ctx.fillText('[INTERCEPTED]', x0, y0 + height * 0.8);
+      }
+    });
+  }
+
+  // 6c. Voice & Audio Scrubbing Logic
+  let isRecording = false;
+  let recognition = null;
+  let finalTranscript = '';
+
+  if (micBtn && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+      isRecording = true;
+      finalTranscript = '';
+      micBtn.classList.replace('bg-blue-100', 'bg-red-100');
+      micBtn.classList.replace('border-blue-200', 'border-red-200');
+      micIcon.classList.replace('text-blue-600', 'text-red-600');
+      voiceStatusTitle.textContent = 'Listening...';
+      voiceStatusTitle.classList.add('animate-pulse');
+      voiceRecordingBorder.classList.remove('opacity-0');
+      voiceRecordingBorder.classList.replace('border-blue-500', 'border-red-500');
+      showToast('🎤 Voice Recording Started');
+    };
+
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      finalTranscript = '';
+      
+      for (let i = 0; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+      
+      // Perform fast real-time regex redaction on the UI while speaking
+      let displayRaw = finalTranscript + interimTranscript;
+      
+      // Real-time frontend regex masking
+      let displayRedacted = displayRaw
+        .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/gi, '[EMAIL_REDACTED]')
+        .replace(/\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, '[PHONE_REDACTED]')
+        .replace(/(?:password|passwd|pwd|pass|secret_key)\s*[:=]\s*(?:['"]([^'"]+)['"]|([^\s,;:{}]+))/gi, 'password: [REDACTED]')
+        .replace(/\b[2-9]{1}[0-9]{3}[\s-]?[0-9]{4}[\s-]?[0-9]{4}\b/g, '[AADHAAR_REDACTED]')
+        .replace(/\b[A-Z]{5}[0-9]{4}[A-Z]{1}\b/g, '[PAN_REDACTED]')
+        .replace(/\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})\b/g, '[CREDIT_CARD_REDACTED]');
+      
+      voiceTranscriptText.innerHTML = displayRedacted ? `<span class="text-emerald-500 font-mono font-bold">${displayRedacted}</span>` : 'Listening...';
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error', event.error);
+      showToast(`❌ Microphone error: ${event.error}`, 'error');
+      stopRecording();
+    };
+
+    recognition.onend = async () => {
+      if (isRecording) {
+        // Automatically restart if continuous listening dropped, unless user stopped
+        // For simplicity, we just process on stop.
+      }
+      stopRecordingUI();
+      if (finalTranscript.trim().length > 0) {
+        voiceStatusTitle.textContent = 'Processing Voice...';
+        voiceStatusTitle.classList.remove('animate-pulse');
+        await performVoiceScrubbing(finalTranscript);
+      } else {
+        voiceStatusTitle.textContent = 'Tap to Speak';
+        voiceTranscriptText.textContent = 'Say a secret... We will scrub it and speak it back.';
+      }
+    };
+
+    micBtn.addEventListener('click', () => {
+      if (isRecording) {
+        isRecording = false;
+        recognition.stop();
+      } else {
+        recognition.start();
+      }
+    });
+
+  } else if (micBtn) {
+    micBtn.addEventListener('click', () => {
+      showToast('❌ Speech Recognition API not supported in this browser.', 'error');
+    });
+  }
+
+  function stopRecordingUI() {
+    isRecording = false;
+    micBtn.classList.replace('bg-red-100', 'bg-blue-100');
+    micBtn.classList.replace('border-red-200', 'border-blue-200');
+    micIcon.classList.replace('text-red-600', 'text-blue-600');
+    voiceStatusTitle.classList.remove('animate-pulse');
+    voiceRecordingBorder.classList.add('opacity-0');
+    voiceRecordingBorder.classList.replace('border-red-500', 'border-blue-500');
+  }
+
+  function stopRecording() {
+    if (recognition && isRecording) {
+      isRecording = false;
+      recognition.stop();
+      stopRecordingUI();
+    }
+  }
+
+  async function performVoiceScrubbing(text) {
+    const btnContentHtml = scrubBtn.innerHTML;
+    scrubBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> Processing Audio...`;
+    scrubBtn.disabled = true;
+    showToast('⚙️ Sending transcript to Gemma 2B...');
+    
+    // We can also put the text in the raw text box for visual feedback
+    if (rawTextInput) rawTextInput.value = text;
+    
+    try {
+      const mode = typeof activeSensitivityMode !== 'undefined' ? activeSensitivityMode : 'standard';
+      
+      const res = await fetch('/api/scrub', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, mode })
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        updateOutputUI(data);
+        showToast('✅ Audio Transcript Redacted successfully');
+        
+        voiceStatusTitle.textContent = 'Tap to Speak';
+        voiceTranscriptText.textContent = 'Say a secret... We will scrub it and speak it back.';
+        
+        // Speak it out!
+        if ('speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(data.finalScrubbedText);
+          utterance.rate = 0.9;
+          utterance.pitch = 0.8;
+          
+          // Try to use a robotic/Google voice if available
+          const voices = window.speechSynthesis.getVoices();
+          const robotVoice = voices.find(v => v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Zira'));
+          if (robotVoice) utterance.voice = robotVoice;
+          
+          window.speechSynthesis.speak(utterance);
+        }
+      } else {
+        showToast(`❌ Error: ${data.error || 'Failed to redact'}`, 'error');
+        voiceStatusTitle.textContent = 'Tap to Speak';
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Failed to connect to local API.', 'error');
+      voiceStatusTitle.textContent = 'Tap to Speak';
+    } finally {
+      scrubBtn.innerHTML = btnContentHtml;
+      scrubBtn.disabled = false;
+      lucide.createIcons();
+    }
   }
 
   // 7. Perform Text Redaction Sequence
