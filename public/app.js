@@ -640,10 +640,29 @@ Internal Hospital Host: med-records.internal.local (10.0.4.15)`
     const ctx = redactionCanvas.getContext('2d');
     ctx.drawImage(imgObj, 0, 0);
 
+    // Find sensitive matches in the full text to catch spaced numbers like Aadhaar
+    const fullText = ocrWords.map(w => w.text).join(' ');
+    const sensitivePatterns = [
+      /\b[2-9]{1}[0-9]{3}[\s-]?[0-9]{4}[\s-]?[0-9]{4}\b/g, // Aadhaar
+      /\b[A-Z]{5}[0-9]{4}[A-Z]{1}\b/g, // PAN
+      /\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, // Phone
+      /\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})\b/g // Credit Card
+    ];
+    const matches = [];
+    sensitivePatterns.forEach(regex => {
+      let match;
+      while ((match = regex.exec(fullText)) !== null) {
+        matches.push(match[0]);
+      }
+    });
+
     // Identify words/regions matching sensitive patterns
     ocrWords.forEach(word => {
       const wText = word.text || '';
-      const isSensitive = /key|sk_|pk_|AKIA|pass|token|secret|@|\d{10,}|[A-Z]{5}\d{4}[A-Z]/i.test(wText);
+      
+      // Check if word is part of a multi-word secret (like Aadhaar) OR matches the single-word regex
+      const isPartOfSecret = matches.some(m => m.includes(wText) && wText.length > 2);
+      const isSensitive = isPartOfSecret || /key|sk_|pk_|AKIA|pass|token|secret|@|\d{10,}|[A-Z]{5}\d{4}[A-Z]/i.test(wText);
 
       if (isSensitive && word.bbox) {
         const { x0, y0, x1, y1 } = word.bbox;
@@ -778,11 +797,28 @@ Internal Hospital Host: med-records.internal.local (10.0.4.15)`
   function renderLiveRedactions(ocrWords) {
     const ctx = liveRedactionCanvas.getContext('2d');
     ctx.clearRect(0, 0, liveRedactionCanvas.width, liveRedactionCanvas.height);
+    
+    // Find sensitive matches in the full text to catch spaced numbers like Aadhaar
+    const fullText = ocrWords.map(w => w.text).join(' ');
+    const sensitivePatterns = [
+      /\b[2-9]{1}[0-9]{3}[\s-]?[0-9]{4}[\s-]?[0-9]{4}\b/g, // Aadhaar
+      /\b[A-Z]{5}[0-9]{4}[A-Z]{1}\b/g, // PAN
+      /\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, // Phone
+      /\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})\b/g // Credit Card
+    ];
+    const matches = [];
+    sensitivePatterns.forEach(regex => {
+      let match;
+      while ((match = regex.exec(fullText)) !== null) {
+        matches.push(match[0]);
+      }
+    });
 
     ocrWords.forEach(word => {
       const wText = word.text || '';
       // Regex check for API keys, passwords, PAN, AADHAAR, internal IPs, etc
-      const isSensitive = /key|sk_|pk_|AKIA|pass|token|secret|@|\d{10,}|[A-Z]{5}\d{4}[A-Z]|10\.\d|192\.168/i.test(wText);
+      const isPartOfSecret = matches.some(m => m.includes(wText) && wText.length > 2);
+      const isSensitive = isPartOfSecret || /key|sk_|pk_|AKIA|pass|token|secret|@|\d{10,}|[A-Z]{5}\d{4}[A-Z]|10\.\d|192\.168/i.test(wText);
 
       if (isSensitive && word.bbox) {
         const { x0, y0, x1, y1 } = word.bbox;
@@ -843,14 +879,14 @@ Internal Hospital Host: med-records.internal.local (10.0.4.15)`
       // Perform fast real-time regex redaction on the UI while speaking
       let displayRaw = finalTranscript + interimTranscript;
       
-      // Real-time frontend regex masking
+      // Real-time frontend regex masking (Optimized for Spoken Language)
       let displayRedacted = displayRaw
-        .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/gi, '[EMAIL_REDACTED]')
-        .replace(/\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, '[PHONE_REDACTED]')
-        .replace(/(?:password|passwd|pwd|pass|secret_key)\s*[:=]\s*(?:['"]([^'"]+)['"]|([^\s,;:{}]+))/gi, 'password: [REDACTED]')
-        .replace(/\b[2-9]{1}[0-9]{3}[\s-]?[0-9]{4}[\s-]?[0-9]{4}\b/g, '[AADHAAR_REDACTED]')
-        .replace(/\b[A-Z]{5}[0-9]{4}[A-Z]{1}\b/g, '[PAN_REDACTED]')
-        .replace(/\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})\b/g, '[CREDIT_CARD_REDACTED]');
+        .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/gi, '[EMAIL_REDACTED]')
+        .replace(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g, '[PHONE_REDACTED]')
+        .replace(/(?:password is|password|passwd|pwd|pass|secret_key)\s*(?:[:=is]*)\s*([^\s,;:{}]+)/gi, 'password [REDACTED]')
+        .replace(/[2-9]{1}[0-9]{3}[\s-]?[0-9]{4}[\s-]?[0-9]{4}/g, '[AADHAAR_REDACTED]')
+        .replace(/[A-Z]{5}[0-9]{4}[A-Z]{1}/gi, '[PAN_REDACTED]')
+        .replace(/(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})/g, '[CREDIT_CARD_REDACTED]');
       
       voiceTranscriptText.innerHTML = displayRedacted ? `<span class="text-emerald-500 font-mono font-bold">${displayRedacted}</span>` : 'Listening...';
     };
